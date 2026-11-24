@@ -311,6 +311,12 @@ const LV = new Map(DICT)
 
 function detect(): Lang {
   try {
+    const q = new URLSearchParams(window.location.search).get("lang") as Lang | null
+    if (q && LANGS.includes(q)) return q
+  } catch {
+    /* no URL access: fall through */
+  }
+  try {
     const saved = localStorage.getItem("snug.lang") as Lang | null
     if (saved && LANGS.includes(saved)) return saved
   } catch {
@@ -335,6 +341,21 @@ export function LangProvider({ children }: { children: React.ReactNode }) {
   }, [])
   React.useEffect(() => {
     document.documentElement.lang = lang
+    // keep a shareable, indexable address per language: /?lang=lv for Latvian
+    try {
+      const url = new URL(window.location.href)
+      if (lang === "en") url.searchParams.delete("lang")
+      else url.searchParams.set("lang", lang)
+      if (url.href !== window.location.href) window.history.replaceState(null, "", url.href)
+    } catch {
+      /* ignore */
+    }
+    const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
+    if (canonical) canonical.href = lang === "en" ? "https://thesnuggest.com/" : "https://thesnuggest.com/?lang=" + lang
+    const desc = document.querySelector<HTMLMetaElement>('meta[name="description"]')
+    if (desc && lang === "lv")
+      desc.content = "The Snuggest — omulīgs kokteiļu bārs un virtuve Zirgu ielā 3, Vecrīgā. 21 kokteilis par 5 € O–Sv 18:00–20:00, ar rokām gatavota turku virtuve, smash burgeri, karaoke un pasākumi."
+    document.title = lang === "lv" ? "The Snuggest — kokteiļu bārs un virtuve Vecrīgā" : "The Snuggest — Cocktail bar & kitchen in Old Town Riga"
   }, [lang])
   const t = React.useCallback((en: string) => (lang === "en" ? en : LV.get(en) ?? en), [lang])
   const value = React.useMemo(() => ({ lang, setLang, t }), [lang, setLang, t])
