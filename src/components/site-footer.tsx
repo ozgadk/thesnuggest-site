@@ -1,4 +1,5 @@
 import MeadowRiseFooter from "@/components/ui/meadow-rise-footer"
+import { EMAIL } from "@/lib/venue"
 import { useT } from "@/lib/i18n"
 
 const MAPS = "https://www.google.com/maps/search/?api=1&query=The+Snuggest+Zirgu+iela+3+Riga"
@@ -21,7 +22,8 @@ export default function SiteFooter() {
           links: [
             { label: t("Cocktails"), href: "#cocktails" },
             { label: t("Kitchen"), href: "#kitchen" },
-            { label: t("Gallery"), href: "#kitchen-gallery" },
+            { label: t("Events"), href: "#events" },
+            { label: t("Catering"), href: "#catering" },
             { label: t("Visit us"), href: "#visit" },
           ],
         },
@@ -35,6 +37,7 @@ export default function SiteFooter() {
         {
           title: t("Contact"),
           links: [
+            { label: EMAIL, href: "mailto:" + EMAIL },
             { label: "+371 22 483 543", href: "tel:+37122483543" },
             { label: "Zirgu iela 3, Rīga", href: MAPS },
             { label: t("Review us on Google"), href: "https://g.page/r/CRLADiBAta7sEAE/review" },

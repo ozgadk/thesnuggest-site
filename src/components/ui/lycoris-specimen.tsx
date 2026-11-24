@@ -686,7 +686,7 @@ export default function LycorisSpecimen({
     facts: [
       ["Cocktails", "21 at 5 €"],
       ["Kitchen", "until late"],
-      ["Nights", "Music Bingo"],
+      ["Nights", "Karaoke"],
     ],
     translation: "Cheers, in Latvian",
   },

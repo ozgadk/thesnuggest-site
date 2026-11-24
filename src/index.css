@@ -52,3 +52,37 @@ html, body { margin: 0; background: var(--snug-ink); color: var(--snug-cream); }
 }
 .snug-cta .trcta__text { font-weight: 700; }
 .snug-cta .trcta__headline em { font-style: normal; color: var(--snug-orange); }
+
+/* Cocktail Hour: big clock + live status inside the ticker band */
+.snug-cta .trcta__sub { max-width: 60ch; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.snug-hh-clock { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 6px; }
+.snug-hh-time {
+  font-family: "Federant", "Iowan Old Style", Georgia, serif;
+  font-size: clamp(34px, 10.4vw, 124px);
+  line-height: 0.95;
+  color: var(--snug-orange);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  text-shadow: 0 0 40px rgba(236, 122, 44, 0.35);
+}
+.snug-hh-days {
+  font-size: 13px; font-weight: 700; letter-spacing: 0.32em; text-transform: uppercase; color: var(--snug-gold);
+}
+.snug-hh-live {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 9px 18px; border-radius: 999px;
+  border: 1px solid rgba(217, 174, 85, 0.4);
+  font-size: 15px; font-weight: 600; color: var(--snug-cream);
+}
+.snug-hh-live i { width: 9px; height: 9px; border-radius: 50%; background: var(--snug-gold); }
+.snug-hh-live.is-on { background: var(--snug-orange); border-color: var(--snug-orange); color: var(--snug-ink); }
+.snug-hh-live.is-on i { background: var(--snug-ink); animation: snug-pulse 1.4s ease-in-out infinite; }
+@keyframes snug-pulse { 50% { opacity: 0.25; } }
+.snug-hh-sub { display: block; }
+@media (prefers-reduced-motion: reduce) { .snug-hh-live.is-on i { animation: none; } }
+
+@media (max-width: 560px) {
+  .snug-cta .trcta__face { padding-inline: 12px; }
+  .snug-hh-time { font-size: clamp(30px, 11.2vw, 52px); }
+}
