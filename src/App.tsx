@@ -6,58 +6,93 @@ import GallerySection, { BAR_PHOTOS, KITCHEN_PHOTOS } from "@/components/gallery
 import CocktailsSection from "@/components/cocktails-section"
 import VisitSection from "@/components/visit-section"
 import SiteFooter from "@/components/site-footer"
+import LanguageSwitcher from "@/components/language-switcher"
+import { LangProvider, useT } from "@/lib/i18n"
 
-export default function App() {
+const MAPS = "https://www.google.com/maps/search/?api=1&query=The+Snuggest+Zirgu+iela+3+Riga"
+
+function Site() {
+  const t = useT()
+  const hh = t("5 € IN COCKTAIL HOUR")
   return (
     <main className="w-full">
       <LycorisSpecimen
         name="Snuggest"
+        kicker={t("Cocktail bar & kitchen")}
+        overline={t("The")}
+        stamp={[t("Cocktails"), t("Kitchen"), "Vecrīga"]}
+        place={{ big: "Rīga", lines: ["Zirgu iela 3", t("Old Town")] }}
+        colophon={[
+          [t("Cocktail Hour"), t("5 € daily")],
+          [t("Kitchen"), t("Smash & Turkish")],
+          [t("Open"), t("Tue – Sun")],
+          ["Zirgu iela 3", "Vecrīga"],
+        ]}
+        crownCaption={t("Pull up a stool")}
         studio="Zirgu iela 3 · Vecrīga"
-        description="The Snuggest is a cosy cocktail bar & kitchen on Zirgu iela 3 in Old Town Riga. Twenty-one cocktails for 5 € every evening, smash burgers, a proper Turkish kitchen and Music Bingo nights."
+        description={t(
+          "The Snuggest is a cosy cocktail bar & kitchen on Zirgu iela 3 in Old Town Riga. Twenty-one cocktails for 5 € every evening, smash burgers, a proper Turkish kitchen and Music Bingo nights.",
+        )}
         specs={[
-          "21 cocktails at 5 €",
-          "Cocktail Hour daily from 18:00",
-          "Smash burgers & Turkish kitchen",
-          "Craft beer & beer cocktails",
-          "4.9 ★ on Google",
+          t("21 cocktails at 5 €"),
+          t("Cocktail Hour daily from 18:00"),
+          t("Smash burgers & Turkish kitchen"),
+          t("Craft beer & beer cocktails"),
+          t("4.9 ★ on Google"),
         ]}
         tagline={[
-          { text: "Sip" },
-          { text: "slow in", small: true },
-          { text: "Old Town" },
-          { text: "every evening", small: true },
+          { text: t("Sip") },
+          { text: t("slow in"), small: true },
+          { text: t("Old Town") },
+          { text: t("every evening"), small: true },
         ]}
+        bloomCaption={t("Cocktail Hour · every evening from 18:00")}
         multilingual="Prie·kā!"
-        ligatureWord="Cocktails"
+        ligatureWord={t("Cocktails")}
+        finale={{
+          over: t("On the menu tonight"),
+          href: "#cocktails",
+          facts: [
+            [t("Cocktails"), t("21 at 5 €")],
+            [t("Kitchen"), t("until late")],
+            [t("Nights"), "Music Bingo"],
+          ],
+          translation: t("Cheers, in Latvian"),
+        }}
+        stack={[t("Shaken"), t("Stirred"), t("Served")]}
+        ribbon={t("21 cocktails · 5 € · every evening from 18:00 · Zirgu iela 3")}
+        nav={[t("Welcome"), t("The bar"), t("Menu"), t("Shaken"), t("Tonight"), t("Cheers")]}
+        labels={{ menu: t("Menu"), idle: t("Cheers"), hover: t("HOVER A DRINK"), onMenu: t("ON THE MENU") }}
         links={[
           { label: "INSTAGRAM @THESNUGGEST", href: "https://www.instagram.com/thesnuggest/" },
-          { label: "ZIRGU IELA 3 · RĪGA", href: "https://www.google.com/maps/search/?api=1&query=The+Snuggest+Zirgu+iela+3+Riga" },
+          { label: "ZIRGU IELA 3 · RĪGA", href: MAPS },
         ]}
         logoSrc="/img/logo-sm.webp"
+        emblemSrc="/img/panda-round.webp"
         specimen={{
           left: [
-            ["CLASSICS", ["Mojito", "Aperol Spritz", "Moscow Mule"]],
-            ["HOUSE", ["Snug Peach Gin", "Pistachio Dream"]],
-            ["SHOTS", ["The Snuggest", "Black Angel"]],
+            [t("CLASSICS"), ["Mojito", "Aperol Spritz", "Moscow Mule"]],
+            [t("HOUSE"), ["Snug Peach Gin", "Pistachio Dream"]],
+            [t("SHOTS"), ["The Snuggest", "Black Angel"]],
           ],
           right: [
-            ["BEER COCKTAILS", ["Istanbul City", "Antalya Sun", "Troia"]],
-            ["KITCHEN", ["Smash Burger", "Lahmacun"]],
-            ["WINTER", ["Mulled Wine", "Hot Amaretto"]],
+            [t("BEER COCKTAILS"), ["Istanbul City", "Antalya Sun", "Troia"]],
+            [t("KITCHEN"), ["Smash Burger", "Lahmacun"]],
+            [t("WINTER"), ["Mulled Wine", "Hot Amaretto"]],
           ],
           prices: {
-            "Mojito": "8.00 € · 5 € IN COCKTAIL HOUR",
-            "Aperol Spritz": "8.00 € · 5 € IN COCKTAIL HOUR",
-            "Moscow Mule": "9.00 € · 5 € IN COCKTAIL HOUR",
-            "Snug Peach Gin": "8.50 € · 5 € IN COCKTAIL HOUR",
+            Mojito: "8.00 € · " + hh,
+            "Aperol Spritz": "8.00 € · " + hh,
+            "Moscow Mule": "9.00 € · " + hh,
+            "Snug Peach Gin": "8.50 € · " + hh,
             "Pistachio Dream": "9.50 €",
-            "The Snuggest": "3.00 € · SHOT",
-            "Black Angel": "3.00 € · SHOT",
-            "Istanbul City": "8.00 € · 5 € IN COCKTAIL HOUR",
-            "Antalya Sun": "8.00 € · 5 € IN COCKTAIL HOUR",
-            "Troia": "8.00 € · 5 € IN COCKTAIL HOUR",
-            "Smash Burger": "10.00 € · WITH FRIES",
-            "Lahmacun": "10.00 € · 2 PCS",
+            "The Snuggest": "3.00 € · " + t("SHOT"),
+            "Black Angel": "3.00 € · " + t("SHOT"),
+            "Istanbul City": "8.00 € · " + hh,
+            "Antalya Sun": "8.00 € · " + hh,
+            Troia: "8.00 € · " + hh,
+            "Smash Burger": "10.00 € · " + t("WITH FRIES"),
+            Lahmacun: "10.00 € · " + t("2 PCS"),
             "Mulled Wine": "5.00 €",
             "Hot Amaretto": "8.00 €",
           },
@@ -75,7 +110,7 @@ export default function App() {
           scrollDependent
           clasname="font-[Federant,Georgia,serif] leading-[1] text-[#F4ECD9]"
         >
-          {"Cocktails · Turkish kitchen · Music Bingo · "}
+          {t("Cocktails · Turkish kitchen · Music Bingo · ")}
         </ScrollBaseAnimation>
         <ScrollBaseAnimation
           delay={300}
@@ -90,27 +125,36 @@ export default function App() {
       <TickerRingCta
         className="snug-cta"
         theme="night"
-        eyebrow="Cocktail Hour · every day"
-        headline={<>21 cocktails, <em>5 €</em> a glass.</>}
-        sub="Mojito, Espresso Martini, Aperol Spritz, our Istanbul City beer cocktail and the house Snug Peach Gin — at the bar, every single evening."
-        action="Get directions"
-        href="https://www.google.com/maps/search/?api=1&query=The+Snuggest+Zirgu+iela+3+Riga"
-        secondary={{ label: "Follow @thesnuggest", href: "https://www.instagram.com/thesnuggest/" }}
-        ticker={[
-          "Sun–Thu 18:00–21:00",
-          "Fri–Sat 18:00–20:00",
-          "21 cocktails · 5 €",
-          "Zirgu iela 3 · Vecrīga",
-          "In the bar only",
-        ]}
+        eyebrow={t("Cocktail Hour · every day")}
+        headline={
+          <>
+            {t("21 cocktails,")} <em>5 €</em> {t("a glass.")}
+          </>
+        }
+        sub={t(
+          "Mojito, Espresso Martini, Aperol Spritz, our Istanbul City beer cocktail and the house Snug Peach Gin — at the bar, every single evening.",
+        )}
+        action={t("Get directions")}
+        href={MAPS}
+        secondary={{ label: t("Follow @thesnuggest"), href: "https://www.instagram.com/thesnuggest/" }}
+        ticker={[t("Sun–Thu 18:00–21:00"), t("Fri–Sat 18:00–20:00"), t("21 cocktails · 5 €"), "Zirgu iela 3 · Vecrīga", t("In the bar only")]}
       />
 
       <CocktailsSection />
-      <GallerySection id="bar-gallery" eyebrow="The bar" title="A night at The Snuggest" photos={BAR_PHOTOS} tone="green" />
+      <GallerySection id="bar-gallery" eyebrow={t("The bar")} title={t("A night at The Snuggest")} photos={BAR_PHOTOS} tone="green" />
       <KitchenSection />
-      <GallerySection id="kitchen-gallery" eyebrow="Gallery" title="Snuggest Kitchen" photos={KITCHEN_PHOTOS} />
+      <GallerySection id="kitchen-gallery" eyebrow={t("Gallery")} title={t("Snuggest Kitchen")} photos={KITCHEN_PHOTOS} />
       <VisitSection />
       <SiteFooter />
+      <LanguageSwitcher />
     </main>
+  )
+}
+
+export default function App() {
+  return (
+    <LangProvider>
+      <Site />
+    </LangProvider>
   )
 }

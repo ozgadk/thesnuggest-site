@@ -1,47 +1,49 @@
 import MeadowRiseFooter from "@/components/ui/meadow-rise-footer"
+import { useT } from "@/lib/i18n"
 
 const MAPS = "https://www.google.com/maps/search/?api=1&query=The+Snuggest+Zirgu+iela+3+Riga"
 
 export default function SiteFooter() {
+  const t = useT()
   return (
     <MeadowRiseFooter
       name="The Snuggest"
       brandHref="#"
       logo={<img src="/img/logo-sm.webp" alt="" width={44} height={44} style={{ objectFit: "contain" }} />}
-      heading={"See you *tonight*\nat The Snuggest."}
-      subheading="Cocktails from 5 €, a proper Turkish kitchen and the cosiest corner of Old Town Riga."
-      cta={{ label: "Get directions", href: MAPS }}
-      tagline="Cocktail bar & kitchen · Zirgu iela 3, Vecrīga, Rīga"
+      heading={t("See you *tonight*\nat The Snuggest.")}
+      subheading={t("Cocktails from 5 €, a proper Turkish kitchen and the cosiest corner of Old Town Riga.")}
+      cta={{ label: t("Get directions"), href: MAPS }}
+      tagline={t("Cocktail bar & kitchen · Zirgu iela 3, Vecrīga, Rīga")}
       newsletter={false}
       columns={[
         {
-          title: "Explore",
+          title: t("Explore"),
           links: [
-            { label: "Cocktails", href: "#cocktails" },
-            { label: "Kitchen", href: "#kitchen" },
-            { label: "Gallery", href: "#kitchen-gallery" },
-            { label: "Visit us", href: "#visit" },
+            { label: t("Cocktails"), href: "#cocktails" },
+            { label: t("Kitchen"), href: "#kitchen" },
+            { label: t("Gallery"), href: "#kitchen-gallery" },
+            { label: t("Visit us"), href: "#visit" },
           ],
         },
         {
-          title: "Order",
+          title: t("Order"),
           links: [
             { label: "Wolt", href: "https://wolt.com/en/lva/riga/restaurant/the-snuggest-barcafe" },
             { label: "Bolt Food", href: "https://food.bolt.eu/en/3-riga/p/131314-the-snuggest-kitchen/" },
           ],
         },
         {
-          title: "Contact",
+          title: t("Contact"),
           links: [
             { label: "+371 22 483 543", href: "tel:+37122483543" },
             { label: "Zirgu iela 3, Rīga", href: MAPS },
-            { label: "Review us on Google", href: "https://g.page/r/CRLADiBAta7sEAE/review" },
+            { label: t("Review us on Google"), href: "https://g.page/r/CRLADiBAta7sEAE/review" },
           ],
         },
       ]}
-      socialTitle="Follow"
+      socialTitle={t("Follow")}
       socials={[{ icon: "instagram", href: "https://www.instagram.com/thesnuggest/", label: "Instagram @thesnuggest" }]}
-      copyright={"© " + new Date().getFullYear() + " The Snuggest · Alcohol is served to guests aged 18+. Please drink responsibly."}
+      copyright={"© " + new Date().getFullYear() + " The Snuggest · " + t("Alcohol is served to guests aged 18+. Please drink responsibly.")}
       legal={[]}
       preset="moonlit"
       palette={{

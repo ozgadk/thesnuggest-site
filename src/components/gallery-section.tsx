@@ -1,6 +1,7 @@
 import { Gallery, GalleryGrid, GalleryImage } from "@/components/ui/shared-element-gallery"
 import { Camera } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useT } from "@/lib/i18n"
 
 export type Photo = { id: string; src: string; alt: string }
 
@@ -42,6 +43,7 @@ type Props = {
 }
 
 export default function GallerySection({ id, eyebrow, title, photos, tone = "deep" }: Props) {
+  const t = useT()
   return (
     <section
       id={id}
@@ -56,7 +58,7 @@ export default function GallerySection({ id, eyebrow, title, photos, tone = "dee
             </h2>
             {photos.length > 0 && (
               <p className="mt-4 max-w-[48ch] text-[16px] leading-relaxed text-[#F4ECD9]/70">
-                Tap any photo to open it, swipe down to close.
+                {t("Tap any photo to open it, swipe down to close.")}
               </p>
             )}
           </div>
@@ -67,7 +69,7 @@ export default function GallerySection({ id, eyebrow, title, photos, tone = "dee
             className="inline-flex min-h-11 items-center gap-2 rounded-full border border-[#D9AE55]/50 px-5 text-[15px] font-semibold text-[#F4ECD9] transition hover:border-[#D9AE55]"
           >
             <Camera className="size-[18px]" aria-hidden />
-            More on @thesnuggest
+            {t("More on @thesnuggest")}
           </a>
         </header>
 
@@ -92,10 +94,10 @@ export default function GallerySection({ id, eyebrow, title, photos, tone = "dee
             />
             <Camera className="relative size-10 text-[#D9AE55]" aria-hidden />
             <p className="relative mt-5 font-[Federant,Georgia,serif] text-[28px] text-[#F4ECD9]">
-              Warm light, good music, full glasses.
+              {t("Warm light, good music, full glasses.")}
             </p>
             <p className="relative mt-2 max-w-[40ch] text-[15px] text-[#F4ECD9]/65">
-              See tonight at the bar on Instagram — <span className="text-[#D9AE55] group-hover:underline">@thesnuggest</span>
+              {t("See tonight at the bar on Instagram —")} <span className="text-[#D9AE55] group-hover:underline">@thesnuggest</span>
             </p>
           </a>
         )}

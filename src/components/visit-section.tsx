@@ -1,5 +1,6 @@
 import { LocationMap } from "@/components/ui/expand-map"
 import { MapPin, Phone, Navigation } from "lucide-react"
+import { useT } from "@/lib/i18n"
 
 const MAPS = "https://www.google.com/maps/search/?api=1&query=The+Snuggest+Zirgu+iela+3+Riga"
 
@@ -21,17 +22,18 @@ function rigaWeekday() {
 }
 
 export default function VisitSection() {
+  const t = useT()
   const today = rigaWeekday()
   return (
     <section id="visit" className="overflow-hidden border-t border-[#D9AE55]/20 bg-[#0F3324] px-4 py-20 sm:px-8 md:py-28">
       <div className="mx-auto grid max-w-[1200px] grid-cols-1 items-start gap-14 lg:grid-cols-[1.1fr_1fr]">
         <div>
-          <p className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#D9AE55]">Visit us</p>
+          <p className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#D9AE55]">{t("Visit us")}</p>
           <h2 className="mt-3 font-[Federant,Georgia,serif] text-[clamp(40px,6vw,72px)] leading-[1] text-[#F4ECD9]">
-            Zirgu iela 3, Vecrīga
+            {t("Zirgu iela 3, Vecrīga")}
           </h2>
           <p className="mt-5 max-w-[46ch] text-[16px] leading-relaxed text-[#F4ECD9]/70">
-            A cobbled street in the heart of Old Town Riga, a few steps from the Cat House. Walk in — no booking needed.
+            {t("A cobbled street in the heart of Old Town Riga, a few steps from the Cat House. Walk in — no booking needed.")}
           </p>
 
           <div className="mt-10 flex min-h-[320px] items-center justify-center rounded-3xl border border-[#D9AE55]/20 bg-[radial-gradient(ellipse_at_center,rgba(217,174,85,0.08),transparent_70%)] py-12">
@@ -41,7 +43,7 @@ export default function VisitSection() {
 
         <div className="grid gap-10 lg:pt-24">
           <div>
-            <h3 className="font-[Federant,Georgia,serif] text-[26px] text-[#D9AE55]">Opening hours</h3>
+            <h3 className="font-[Federant,Georgia,serif] text-[26px] text-[#D9AE55]">{t("Opening hours")}</h3>
             <table className="mt-4 w-full border-collapse text-[16px]">
               <tbody>
                 {ORDER.map((d) => {
@@ -50,20 +52,20 @@ export default function VisitSection() {
                   return (
                     <tr key={day} className={on ? "text-[#D9AE55]" : "text-[#F4ECD9]/85"}>
                       <td className="border-b border-[#D9AE55]/15 py-2.5 font-medium">
-                        {day}
-                        {on && <span className="ml-2 text-[11px] font-bold uppercase tracking-[0.12em]">today</span>}
+                        {t(day)}
+                        {on && <span className="ml-2 text-[11px] font-bold uppercase tracking-[0.12em]">{t("today")}</span>}
                       </td>
-                      <td className="border-b border-[#D9AE55]/15 py-2.5 text-right tabular-nums">{h ?? "Closed"}</td>
+                      <td className="border-b border-[#D9AE55]/15 py-2.5 text-right tabular-nums">{h ?? t("Closed")}</td>
                     </tr>
                   )
                 })}
               </tbody>
             </table>
-            <p className="mt-3 text-[13px] text-[#F4ECD9]/55">Cocktail Hour: Sun–Thu 18:00–21:00 · Fri–Sat 18:00–20:00</p>
+            <p className="mt-3 text-[13px] text-[#F4ECD9]/55">{t("Cocktail Hour: Sun–Thu 18:00–21:00 · Fri–Sat 18:00–20:00")}</p>
           </div>
 
           <div>
-            <h3 className="font-[Federant,Georgia,serif] text-[26px] text-[#D9AE55]">Contact</h3>
+            <h3 className="font-[Federant,Georgia,serif] text-[26px] text-[#D9AE55]">{t("Contact")}</h3>
             <ul className="mt-4 grid gap-3 text-[16px] text-[#F4ECD9]/85">
               <li className="flex items-center gap-3">
                 <MapPin className="size-[18px] text-[#D9AE55]" aria-hidden /> Zirgu iela 3-1, Rīga, LV-1050
@@ -75,7 +77,7 @@ export default function VisitSection() {
             </ul>
             <div className="mt-6 flex flex-wrap gap-3">
               <a href={MAPS} target="_blank" rel="noopener" className="inline-flex min-h-11 items-center gap-2 rounded-full bg-[#D9AE55] px-6 text-[15px] font-semibold text-[#0A241A] transition hover:brightness-110">
-                <Navigation className="size-4" aria-hidden /> Get directions
+                <Navigation className="size-4" aria-hidden /> {t("Get directions")}
               </a>
               <a href="https://www.instagram.com/thesnuggest/" target="_blank" rel="noopener" className="inline-flex min-h-11 items-center rounded-full border border-[#D9AE55]/50 px-6 text-[15px] font-semibold text-[#F4ECD9] transition hover:border-[#D9AE55]">
                 Instagram

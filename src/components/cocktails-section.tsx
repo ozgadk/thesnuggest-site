@@ -2,6 +2,7 @@ import * as React from "react"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 import { Martini } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useT } from "@/lib/i18n"
 
 type Drink = { n: string; d?: string; p: string; hh?: boolean; sig?: boolean; isNew?: boolean; img?: string }
 type Group = { id: string; label: string; note?: string; items: Drink[] }
@@ -109,6 +110,7 @@ const STRIP: { src: string; alt: string; caption?: string }[] = [
 export default function CocktailsSection() {
   const [tab, setTab] = React.useState(MENU[0].id)
   const reduce = useReducedMotion()
+  const t = useT()
   const group = MENU.find((g) => g.id === tab)!
   const tabs = React.useRef<(HTMLButtonElement | null)[]>([])
 
@@ -130,13 +132,13 @@ export default function CocktailsSection() {
       <div className="relative mx-auto max-w-[1200px]">
         <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
           <div>
-            <p className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#D9AE55]">The bar</p>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#D9AE55]">{t("The bar")}</p>
             <h2 className="mt-3 font-[Federant,Georgia,serif] text-[clamp(40px,6vw,72px)] leading-[1] text-[#F4ECD9]">
-              Cocktails
+              {t("Cocktails")}
             </h2>
           </div>
           <p className="max-w-[44ch] text-[16px] leading-relaxed text-[#F4ECD9]/70">
-            House signatures, beer cocktails named after Istanbul and Antalya, and every classic you'd hope for.
+            {t("House signatures, beer cocktails named after Istanbul and Antalya, and every classic you'd hope for.")}
           </p>
         </div>
 
@@ -154,7 +156,7 @@ export default function CocktailsSection() {
               <img src={ph.src} alt={ph.alt} loading="lazy" className="aspect-[3/4] w-full object-cover transition-transform duration-700 hover:scale-105" />
               {ph.caption && (
                 <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0A241A]/90 to-transparent px-4 pb-3 pt-10 font-[Federant,Georgia,serif] text-[18px] text-[#F4ECD9]">
-                  {ph.caption}
+                  {t(ph.caption)}
                 </figcaption>
               )}
             </motion.figure>
@@ -164,7 +166,7 @@ export default function CocktailsSection() {
         {/* tabs */}
         <div
           role="tablist"
-          aria-label="Cocktail menu"
+          aria-label={t("Cocktail menu")}
           className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-2 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0"
         >
           {MENU.map((g, i) => {
@@ -194,7 +196,7 @@ export default function CocktailsSection() {
                     transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 34 }}
                   />
                 )}
-                <span className="relative">{g.label}</span>
+                <span className="relative">{t(g.label)}</span>
               </button>
             )
           })}
@@ -210,7 +212,7 @@ export default function CocktailsSection() {
               exit={reduce ? undefined : { opacity: 0, y: -8 }}
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             >
-              {group.note && <p className="mb-6 text-[15px] italic text-[#F4ECD9]/60">{group.note}</p>}
+              {group.note && <p className="mb-6 text-[15px] italic text-[#F4ECD9]/60">{t(group.note)}</p>}
               <ul className="grid grid-cols-1 items-start gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {group.items.map((d, i) => (
                   <motion.li
@@ -228,27 +230,27 @@ export default function CocktailsSection() {
                       className="pointer-events-none absolute -right-10 -top-10 size-36 rounded-full bg-[radial-gradient(closest-side,rgba(236,122,44,0.28),transparent)] opacity-60 transition-opacity group-hover:opacity-100"
                     />
                     <div className="relative flex items-start justify-between gap-4">
-                      <h3 className="font-[Federant,Georgia,serif] text-[24px] leading-[1.1] text-[#F4ECD9]">{d.n}</h3>
+                      <h3 className="font-[Federant,Georgia,serif] text-[24px] leading-[1.1] text-[#F4ECD9]">{t(d.n)}</h3>
                       <span className="shrink-0 whitespace-nowrap font-[Federant,Georgia,serif] text-[22px] tabular-nums text-[#D9AE55]">
                         {d.p} €
                       </span>
                     </div>
-                    {d.d && <p className="relative mt-2 text-[14px] leading-relaxed text-[#F4ECD9]/65">{d.d}</p>}
+                    {d.d && <p className="relative mt-2 text-[14px] leading-relaxed text-[#F4ECD9]/65">{t(d.d)}</p>}
                     {(d.hh || d.sig || d.isNew) && (
                       <div className="relative mt-auto flex flex-wrap gap-2 pt-4">
                         {d.sig && (
                           <span className="inline-flex items-center gap-1 rounded-full bg-[#D9AE55] px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.08em] text-[#0A241A]">
-                            <Martini className="size-3" aria-hidden /> Signature
+                            <Martini className="size-3" aria-hidden /> {t("Signature")}
                           </span>
                         )}
                         {d.isNew && (
                           <span className="rounded-full bg-[#EC7A2C] px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.08em] text-[#0A241A]">
-                            New
+                            {t("New")}
                           </span>
                         )}
                         {d.hh && (
                           <span className="rounded-full border border-[#EC7A2C] px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-[0.08em] text-[#EC7A2C]">
-                            5 € in Cocktail Hour
+                            {t("5 € in Cocktail Hour")}
                           </span>
                         )}
                       </div>
@@ -261,7 +263,7 @@ export default function CocktailsSection() {
         </div>
 
         <p className="mt-8 text-[14px] text-[#F4ECD9]/55">
-          Also: spirits, liqueurs, soft drinks, Turkish tea & coffee and a rotating craft beer list — ask your bartender.
+          {t("Also: spirits, liqueurs, soft drinks, Turkish tea & coffee and a rotating craft beer list — ask your bartender.")}
         </p>
       </div>
     </section>

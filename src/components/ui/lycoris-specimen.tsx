@@ -62,6 +62,10 @@ export type LycorisSpecimenProps = {
   alive?: boolean
   /** Logo image for the cover and the last frame. Falls back to the lily mark. */
   logoSrc?: string
+  /** Small UI words of the menu frame: its title, the idle word, the hover hint, and the fallback price line. */
+  labels?: { menu: string; idle: string; hover: string; onMenu: string }
+  /** Round image shown in place of the WebGL flower (e.g. the panda from the logo). */
+  emblemSrc?: string
   /** Small label under the name on the cover. */
   kicker?: string
   /** Word above the big cover word. */
@@ -659,6 +663,8 @@ export default function LycorisSpecimen({
   seed = 7,
   alive = true,
   logoSrc,
+  emblemSrc,
+  labels = { menu: "Menu", idle: "Cheers", hover: "HOVER A DRINK", onMenu: "ON THE MENU" },
   kicker = "Cocktail bar",
   overline = "The",
   stamp = ["Cocktails", "Kitchen", "Vecrīga"],
@@ -691,6 +697,7 @@ export default function LycorisSpecimen({
   const stageRef = React.useRef<HTMLDivElement | null>(null)
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null)
   const glowRef = React.useRef<HTMLDivElement | null>(null)
+  const emblemRef = React.useRef<HTMLDivElement | null>(null)
   const wordRef = React.useRef<HTMLDivElement | null>(null)
   const [reduced, setReduced] = React.useState(false)
   const [active, setActive] = React.useState(0)
@@ -790,7 +797,9 @@ export default function LycorisSpecimen({
       gl.clearColor(0, 0, 0, 0)
       return true
     }
-    if (!initGL()) {
+    const emblem = emblemRef.current
+    // With an emblem image the flower is not drawn at all; the image takes its place.
+    if (!emblem && !initGL()) {
       gl = null
       ctx2d = canvas.getContext("2d")
     }
@@ -934,6 +943,21 @@ export default function LycorisSpecimen({
       glow.style.transform =
         "translate(" + (gx - gr).toFixed(1) + "px," + (gy - gr).toFixed(1) + "px)"
       glow.style.width = glow.style.height = (gr * 2).toFixed(1) + "px"
+
+      if (emblem) {
+        // The emblem follows the flower's path: where the heart lands, how big it is,
+        // a slow float, and a tilt toward the pointer.
+        const d = k.size * minDim * 0.56
+        const grow = 1 - Math.pow(1 - bloom, 3)
+        const bob = moving ? Math.sin(time * 1.1) * minDim * 0.008 : 0
+        const turn = moving ? Math.sin(time * 0.45) * 2.5 : 0
+        const tilt = moving ? "perspective(900px) rotateY(" + (px * 14).toFixed(2) + "deg) rotateX(" + (-py * 10).toFixed(2) + "deg) " : ""
+        emblem.style.width = emblem.style.height = d.toFixed(1) + "px"
+        emblem.style.transform =
+          "translate(" + (gx - d / 2).toFixed(1) + "px," + (gy - d / 2 + bob + H * 0.05).toFixed(1) + "px) " +
+          tilt + "rotate(" + turn.toFixed(2) + "deg) scale(" + (0.82 + 0.18 * grow).toFixed(3) + ")"
+        emblem.style.opacity = String(grow)
+      }
 
       if (gl && prog) {
         const g = gl
@@ -1183,10 +1207,24 @@ export default function LycorisSpecimen({
           className="absolute inset-0 block"
           style={{ width: "100%", height: "100%", maxWidth: "none" }}
         />
+        {emblemSrc && (
+          <div
+            ref={emblemRef}
+            aria-hidden
+            className="pointer-events-none absolute left-0 top-0 overflow-hidden rounded-full"
+            style={{
+              opacity: 0,
+              willChange: "transform",
+              boxShadow: "0 0 0 3px " + crimson + "b3, 0 0 0 10px " + crimson + "22, 0 40px 100px -30px rgba(0,0,0,0.7)",
+            }}
+          >
+            <img src={emblemSrc} alt="" draggable={false} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", maxWidth: "none" }} />
+          </div>
+        )}
 
         {/* ================================ 0 · cover ================================ */}
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute flex items-start justify-between gap-6" style={{ left: "5cqw", right: "5cqw", top: "5cqh" }}>
+          <div className="absolute flex items-start justify-between gap-6" style={{ left: "5cqw", right: "5cqw", top: "max(5cqh, 68px)" }}>
             <div {...sc(0, "clip", 0)} style={{ ...display, ...hidden, fontSize: "clamp(20px, 3.3cqw, 46px)", lineHeight: 0.88, letterSpacing: "0.02em", textTransform: "uppercase" }}>
               {name}
               <br />
@@ -1252,9 +1290,11 @@ export default function LycorisSpecimen({
 
         {/* ================================ 1 · crown ================================ */}
         <div className="pointer-events-none absolute inset-0">
-          <div {...sc(1, "fade", 0.5)} className="absolute" style={{ ...display, ...hidden, left: "50%", top: "50%", transform: "translate(-50%,-50%)", fontSize: "clamp(10px, 1.1cqw, 14px)" }}>
-            {name}
-          </div>
+          {!emblemSrc && (
+            <div {...sc(1, "fade", 0.5)} className="absolute" style={{ ...display, ...hidden, left: "50%", top: "50%", transform: "translate(-50%,-50%)", fontSize: "clamp(10px, 1.1cqw, 14px)" }}>
+              {name}
+            </div>
+          )}
           <div {...sc(1, "rise", 0.7)} className="absolute" style={{ ...sans, ...hidden, left: "5cqw", bottom: "5cqh", fontSize: 9, letterSpacing: "0.3em", textTransform: "uppercase" }}>
             <span style={{ color: crimson }}>02</span> — {crownCaption}
           </div>
@@ -1275,16 +1315,18 @@ export default function LycorisSpecimen({
               ))}
             </div>
             <div className="lys-spec-mid relative h-full text-center">
-              <div {...sc(2, "rise", 0.35)} className="absolute w-full" style={{ ...hidden, top: "30%", fontSize: "min(2.6cqw, 3.6cqh)", lineHeight: 1 }}>
-                {name}
-                <div style={{ fontSize: "0.5em" }}>Menu</div>
-              </div>
+              {!emblemSrc && (
+                <div {...sc(2, "rise", 0.35)} className="absolute w-full" style={{ ...hidden, top: "30%", fontSize: "min(2.6cqw, 3.6cqh)", lineHeight: 1 }}>
+                  {name}
+                  <div style={{ fontSize: "0.5em" }}>{labels.menu}</div>
+                </div>
+              )}
               <div {...sc(2, "rise", 0.45)} className="absolute w-full" style={{ ...hidden, top: "48%", lineHeight: 1.05 }}>
                 <div style={{ fontSize: inspect ? "min(3.4cqw, 5cqh)" : "min(2.8cqw, 3.8cqh)", color: inspect ? crimson : undefined, transition: "font-size .35s cubic-bezier(.2,.8,.2,1)", whiteSpace: "nowrap" }}>
-                  {inspect ?? "Cheers"}
+                  {inspect ?? labels.idle}
                 </div>
                 <div style={{ ...sans, fontSize: 8, letterSpacing: "0.25em", opacity: 0.6, minHeight: "1.3em", marginTop: 6 }}>
-                  {inspect ? (specimen.prices?.[inspect] ?? "ON THE MENU") : "HOVER A DRINK"}
+                  {inspect ? (specimen.prices?.[inspect] ?? labels.onMenu) : labels.hover}
                 </div>
               </div>
             </div>
