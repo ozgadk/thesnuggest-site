@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+/* shadcn-style theme tokens (HSL triplets), mapped to Snuggest colours */
+:root {
+  --background: 157 57% 9%;
+  --foreground: 42 55% 90%;
+  --muted: 154 53% 16%;
+  --muted-foreground: 44 16% 67%;
+  --border: 40 40% 26%;
+  --primary: 40 63% 59%;
+  --primary-foreground: 157 57% 9%;
+  --accent: 24 83% 55%;
+  --ring: 40 63% 59%;
+}
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-border: hsl(var(--border));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-ring: hsl(var(--ring));
+}
+
+:root {
+  --snug-ink: #0A241A;
+  --snug-green: #0F3324;
+  --snug-gold: #D9AE55;
+  --snug-orange: #EC7A2C;
+  --snug-cream: #F4ECD9;
+  color-scheme: dark;
+}
+
+html, body { margin: 0; background: var(--snug-ink); color: var(--snug-cream); }
+
+/* Ticker Ring CTA in Snuggest colours */
+.trcta.snug-cta {
+  --trcta-bg: var(--snug-ink);
+  --trcta-band: #EC7A2C;
+  --trcta-face: var(--snug-green);
+  --trcta-ink: var(--snug-cream);
+  --trcta-muted: rgba(244, 236, 217, 0.72);
+  --trcta-tick: #0A241A;
+  --trcta-accent: var(--snug-gold);
+  --trcta-on-accent: var(--snug-ink);
+  --trcta-line: rgba(217, 174, 85, 0.28);
+  --trcta-display: "Federant", "Iowan Old Style", Georgia, serif;
+  --trcta-sans: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif;
+}
+.snug-cta .trcta__text { font-weight: 700; }
+.snug-cta .trcta__headline em { font-style: normal; color: var(--snug-orange); }
