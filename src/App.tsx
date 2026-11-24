@@ -17,7 +17,6 @@ import { MAPS } from "@/lib/venue"
 
 function Site() {
   const t = useT()
-  const hh = t("5 € IN COCKTAIL HOUR")
   return (
     <>
     <SiteHeader />
@@ -35,7 +34,6 @@ function Site() {
           [t("Open"), t("Tue – Sun")],
           ["Zirgu iela 3", "Vecrīga"],
         ]}
-        crownCaption={t("Pull up a stool")}
         studio="Zirgu iela 3 · Vecrīga"
         description={t(
           "The Snuggest is a cosy cocktail bar & kitchen on Zirgu iela 3 in Old Town Riga. Twenty-one cocktails for 5 € every evening, smash burgers, a handmade Turkish kitchen, karaoke and events.",
@@ -67,43 +65,13 @@ function Site() {
           translation: t("Cheers, in Latvian"),
         }}
         stack={[t("Shaken"), t("Stirred"), t("Served")]}
-        ribbon={t("21 cocktails · 5 € · every day 18:00–20:00 · Zirgu iela 3")}
-        nav={[t("Welcome"), t("The bar"), t("Menu"), t("Shaken"), t("Tonight"), t("Cheers")]}
-        labels={{ menu: t("Menu"), idle: t("Cheers"), hover: t("HOVER A DRINK"), onMenu: t("ON THE MENU") }}
+        nav={[t("Welcome"), t("Shaken"), t("Tonight"), t("Cheers")]}
         links={[
           { label: "INSTAGRAM @THESNUGGEST", href: "https://www.instagram.com/thesnuggest/" },
           { label: "ZIRGU IELA 3 · RĪGA", href: MAPS },
         ]}
         logoSrc="/img/logo-sm.webp"
         emblemSrc="/img/panda-round.webp"
-        specimen={{
-          left: [
-            [t("CLASSICS"), ["Mojito", "Aperol Spritz", "Moscow Mule"]],
-            [t("HOUSE"), ["Snug Peach Gin", "Pistachio Dream"]],
-            [t("SHOTS"), ["The Snuggest", "Black Angel"]],
-          ],
-          right: [
-            [t("BEER COCKTAILS"), ["Istanbul City", "Antalya Sun", "Troia"]],
-            [t("KITCHEN"), ["Smash Burger", "Lahmacun"]],
-            [t("WINTER"), ["Mulled Wine", "Hot Amaretto"]],
-          ],
-          prices: {
-            Mojito: "8.00 € · " + hh,
-            "Aperol Spritz": "8.00 € · " + hh,
-            "Moscow Mule": "9.00 € · " + hh,
-            "Snug Peach Gin": "8.50 € · " + hh,
-            "Pistachio Dream": "9.50 €",
-            "The Snuggest": "3.00 € · " + t("SHOT"),
-            "Black Angel": "3.00 € · " + t("SHOT"),
-            "Istanbul City": "8.00 € · " + hh,
-            "Antalya Sun": "8.00 € · " + hh,
-            Troia: "8.00 € · " + hh,
-            "Smash Burger": "10.00 € · " + t("WITH FRIES"),
-            Lahmacun: "10.00 € · " + t("2 PCS"),
-            "Mulled Wine": "5.00 €",
-            "Hot Amaretto": "8.00 €",
-          },
-        }}
         sceneScroll={0.9}
         ink="#0A241A"
         bone="#F4ECD9"

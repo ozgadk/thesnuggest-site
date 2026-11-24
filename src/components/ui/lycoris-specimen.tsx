@@ -6,14 +6,14 @@ import * as React from "react"
  * Lycoris Specimen — a scroll-scrubbed type specimen built around one object:
  * a red chrome spider lily, modelled procedurally and lit in raw WebGL.
  *
- * Scroll is the timeline. Six frames — cover, crown, specimen, fan, bloom,
+ * Scroll is the timeline. Four frames — cover, fan, bloom, finale —
  * ligatures — and between each one the camera orbits, the flower shrinks,
  * flies and turns, and the type morphs from one layout into the next. The
  * cover's first and last letters slide out to flank the crown; everything
  * else rises, blurs and clips in on its own stagger.
  *
  * Adapted for The Snuggest (cocktail bar & kitchen, Vecrīga): the type-specimen
- * copy is replaced with bar content — menu words in the specimen frame, venue
+ * copy is replaced with bar content — venue
  * facts in the colophon, and the logo as the mark.
  *
  * One file. React is the only import. The display face (Federant, a free
@@ -62,8 +62,6 @@ export type LycorisSpecimenProps = {
   alive?: boolean
   /** Logo image for the cover and the last frame. Falls back to the lily mark. */
   logoSrc?: string
-  /** Small UI words of the menu frame: its title, the idle word, the hover hint, and the fallback price line. */
-  labels?: { menu: string; idle: string; hover: string; onMenu: string }
   /** Round image shown in place of the WebGL flower (e.g. the panda from the logo). */
   emblemSrc?: string
   /** Small label under the name on the cover. */
@@ -76,12 +74,6 @@ export type LycorisSpecimenProps = {
   place?: { big: string; lines: [string, string] }
   /** Four [title, value] pairs in the cover's accent colophon. */
   colophon?: [string, string][]
-  /** Caption of the crown frame. */
-  crownCaption?: string
-  /** Specimen frame: three groups on each side, [label, words]. Words are menu items. */
-  specimen?: { left: [string, string[]][]; right: [string, string[]][]; prices?: Record<string, string> }
-  /** One running line under the specimen. */
-  ribbon?: string
   /** Big three-line word stack in the fan frame. */
   stack?: [string, string, string]
   /** Bloom frame caption. */
@@ -416,8 +408,6 @@ type Key = {
 
 const KEYS: Key[] = [
   { spin: 0.2, el: 9, size: 0.86, ox: 0, oy: 0.3, stem: 1 },
-  { spin: 1.4, el: 88, size: 0.58, ox: 0, oy: 0, stem: 0 },
-  { spin: 2.3, el: 12, size: 0.27, ox: 0, oy: 0.4, stem: 0.3 },
   { spin: 3.1, el: -30, size: 0.86, ox: 0, oy: -0.34, stem: 0.06 },
   { spin: 4.1, el: 16, size: 1.02, ox: 0.66, oy: 0.2, stem: 1 },
   { spin: 5.0, el: -74, size: 0.86, ox: 0, oy: 1.02, stem: 0.04 },
@@ -425,15 +415,13 @@ const KEYS: Key[] = [
 // Portrait stages move the flower rather than squeezing the type.
 const KEYS_TALL: Partial<Key>[] = [
   { size: 0.9, oy: 0.36 },
-  { size: 0.56 },
-  { size: 0.34, oy: 0.44 },
   { size: 0.95, oy: -0.2 },
   { size: 0.86, ox: 0.5, oy: 0.46 },
   { size: 0.96, oy: 1.0 },
 ]
 const SCENES = KEYS.length
 const HOLD = 0.34
-const NAV = ["Welcome", "The bar", "Menu", "Shaken", "Tonight", "Cheers"]
+const NAV = ["Welcome", "Shaken", "Tonight", "Cheers"]
 
 const keyAt = (coord: number, tall: boolean): Key => {
   const i = Math.max(0, Math.min(SCENES - 1, Math.floor(coord)))
@@ -581,20 +569,6 @@ const DISPLAY = '"Federant", "Uncial Antiqua", "Cinzel Decorative", "Iowan Old S
 const SANS = '"Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, sans-serif'
 const FONT_HREF = "https://fonts.googleapis.com/css2?family=Federant&display=swap"
 
-const DEFAULT_SPECIMEN: { left: [string, string[]][]; right: [string, string[]][]; prices?: Record<string, string> } = {
-  left: [
-    ["CLASSICS", ["Mojito", "Aperol Spritz", "Moscow Mule"]],
-    ["HOUSE", ["Snug Peach Gin", "Pistachio Dream"]],
-    ["SHOTS", ["The Snuggest", "Black Angel", "Midnight Tropic"]],
-  ],
-  right: [
-    ["BEER COCKTAILS", ["Istanbul City", "Antalya Sun", "Troia"]],
-    ["KITCHEN", ["Smash Burger", "Lahmacun"]],
-    ["WINTER", ["Mulled Wine", "Hot Amaretto", "Black Tea Toddy"]],
-  ],
-}
-const DEFAULT_RIBBON = "21 cocktails · 5 € · every evening from 18:00 · Zirgu iela 3"
-
 const DEFAULT_SPECS = [
   "21 cocktails at 5 €",
   "Smash burgers & Turkish kitchen",
@@ -664,7 +638,6 @@ export default function LycorisSpecimen({
   alive = true,
   logoSrc,
   emblemSrc,
-  labels = { menu: "Menu", idle: "Cheers", hover: "HOVER A DRINK", onMenu: "ON THE MENU" },
   kicker = "Cocktail bar",
   overline = "The",
   stamp = ["Cocktails", "Kitchen", "Vecrīga"],
@@ -675,9 +648,6 @@ export default function LycorisSpecimen({
     ["Open", "Tue – Sun"],
     ["Zirgu iela 3", "Vecrīga"],
   ],
-  crownCaption = "Pull up a stool",
-  specimen = DEFAULT_SPECIMEN,
-  ribbon = DEFAULT_RIBBON,
   stack = ["Shaken", "Stirred", "Served"],
   bloomCaption = "Cocktail Hour · every evening from 18:00",
   finale = {
@@ -701,7 +671,6 @@ export default function LycorisSpecimen({
   const wordRef = React.useRef<HTMLDivElement | null>(null)
   const [reduced, setReduced] = React.useState(false)
   const [active, setActive] = React.useState(0)
-  const [inspect, setInspect] = React.useState<string | null>(null)
 
   const desc =
     description ??
@@ -1037,35 +1006,18 @@ export default function LycorisSpecimen({
 
       // The cover word morphs into the crown: its first and last letters slide
       // out to flank the flower, the rest fall into it.
+      // The cover word lifts away as the first frame scrolls out: each letter rises
+      // on its own small stagger, shrinks a touch and blurs.
       const m = easeInOut(clamp01(coord))
-      const out = clamp01(coord - 1)
-      const r1 = keyAt(1, tall).size * minDim * 0.5
-      const cy1 = (0.5 - keyAt(1, tall).oy / 2) * H
       chars.forEach((c, i) => {
         const n0 = nat[i]
         if (!n0) return
-        const flank = i === firstIdx || i === lastIdx
-        if (flank && firstIdx !== lastIdx) {
-          const side = i === firstIdx ? -1 : 1
-          const lw = n0.w
-          const tx = W / 2 + side * (r1 + lw * 0.55 + minDim * 0.02)
-          const dx = (tx - n0.x) * m
-          const dy = (cy1 - n0.y) * m - out * 60
-          const o = coord < 1 ? 1 : 1 - smoothstep(0.1, 0.45, out)
-          c.style.transform = "translate(" + dx.toFixed(1) + "px," + dy.toFixed(1) + "px)"
-          c.style.opacity = String(o)
-          c.style.filter = still || out < 0.05 ? "" : "blur(" + (out * 14).toFixed(1) + "px)"
-        } else {
-          const dx = (W / 2 - n0.x) * m * 0.75
-          const dy = (cy1 - n0.y) * m
-          const o = 1 - smoothstep(0.0, 0.4, m)
-          c.style.transform = still
-            ? ""
-            : "translate(" + dx.toFixed(1) + "px," + dy.toFixed(1) + "px) scale(" + (1 - m * 0.7).toFixed(3) + ")"
-          c.style.opacity = String(o)
-          c.style.filter = still || m < 0.02 ? "" : "blur(" + (m * 12).toFixed(1) + "px)"
-        }
-        c.style.visibility = coord > 1.6 ? "hidden" : ""
+        const lag = chars.length > 1 ? i / (chars.length - 1) : 0
+        const q = clamp01(m * 1.25 - lag * 0.25)
+        c.style.transform = still ? "" : "translate(0px," + (-q * 0.22 * H).toFixed(1) + "px) scale(" + (1 - q * 0.25).toFixed(3) + ")"
+        c.style.opacity = String(1 - smoothstep(0.05, 0.6, q))
+        c.style.filter = still || q < 0.02 ? "" : "blur(" + (q * 12).toFixed(1) + "px)"
+        c.style.visibility = coord > 0.95 ? "hidden" : ""
       })
     }
 
@@ -1130,36 +1082,12 @@ export default function LycorisSpecimen({
   const display: React.CSSProperties = { fontFamily, fontWeight: 400 }
   const sans: React.CSSProperties = { fontFamily: SANS }
   const hidden: React.CSSProperties = { opacity: 0 }
-  const words = (rows: string[], size: string, lh = 1.12) => (
-    <>
-      {rows.map((row) => (
-        <div key={row} style={{ fontSize: size, lineHeight: lh, whiteSpace: "nowrap" }}>
-          <span className="lys-g" data-g={row}>
-            {row}
-          </span>
-        </div>
-      ))}
-    </>
-  )
   const MarkOrLogo = ({ color, accent, size = 30 }: { color: string; accent: string; size?: number }) =>
     logoSrc ? (
       <img src={logoSrc} alt="" width={size} height={size} style={{ width: size, height: size, objectFit: "contain", flex: "none" }} />
     ) : (
       <Mark color={color} accent={accent} />
     )
-  const Side = ({ label, side }: { label: string; side: "l" | "r" }) => (
-    <span
-      className="lys-hide-sm"
-      style={{
-        ...sans, position: "absolute", top: "50%", [side === "l" ? "right" : "left"]: "calc(100% + 16px)",
-        fontSize: 8, letterSpacing: "0.25em", opacity: 0.55, lineHeight: 1,
-        transform: "translate(" + (side === "l" ? "50%" : "-50%") + ",-50%) rotate(" + (side === "l" ? -90 : 90) + "deg)",
-        whiteSpace: "nowrap",
-      }}
-    >
-      {label}
-    </span>
-  )
   const multi = multilingual.split("·")
 
   return (
@@ -1177,11 +1105,6 @@ export default function LycorisSpecimen({
           height, color: bone, background: ink,
           ["--lys-red" as string]: crimson,
         } as React.CSSProperties}
-        onPointerOver={(e) => {
-          const g = (e.target as HTMLElement).dataset?.g
-          if (g) setInspect(g)
-        }}
-        onPointerLeave={() => setInspect(null)}
       >
         {/* frame: a faint olive bleed at the edges, like the board it came from */}
         <div
@@ -1288,86 +1211,29 @@ export default function LycorisSpecimen({
 
         </div>
 
-        {/* ================================ 1 · crown ================================ */}
-        <div className="pointer-events-none absolute inset-0">
-          {!emblemSrc && (
-            <div {...sc(1, "fade", 0.5)} className="absolute" style={{ ...display, ...hidden, left: "50%", top: "50%", transform: "translate(-50%,-50%)", fontSize: "clamp(10px, 1.1cqw, 14px)" }}>
-              {name}
-            </div>
-          )}
-          <div {...sc(1, "rise", 0.7)} className="absolute" style={{ ...sans, ...hidden, left: "5cqw", bottom: "5cqh", fontSize: 9, letterSpacing: "0.3em", textTransform: "uppercase" }}>
-            <span style={{ color: crimson }}>02</span> — {crownCaption}
-          </div>
-        </div>
-
-        {/* ============================== 2 · specimen ============================== */}
-        <div className="pointer-events-none absolute inset-0" style={display}>
-          <div
-            className="lys-spec pointer-events-auto absolute grid items-center"
-            style={{ left: "6cqw", right: "6cqw", top: "12cqh", bottom: "20cqh", gridTemplateColumns: "1fr min(30cqw, 34cqh) 1fr", columnGap: "2cqw" }}
-          >
-            <div className="relative flex flex-col gap-[3.2cqh]">
-              {specimen.left.map(([label, items], i) => (
-                <div key={label} {...sc(2, "clip", i * 0.15)} style={hidden} className="relative">
-                  <Side label={label} side="l" />
-                  {words(items, "min(3.6cqw, 4.4cqh)")}
-                </div>
-              ))}
-            </div>
-            <div className="lys-spec-mid relative h-full text-center">
-              {!emblemSrc && (
-                <div {...sc(2, "rise", 0.35)} className="absolute w-full" style={{ ...hidden, top: "30%", fontSize: "min(2.6cqw, 3.6cqh)", lineHeight: 1 }}>
-                  {name}
-                  <div style={{ fontSize: "0.5em" }}>{labels.menu}</div>
-                </div>
-              )}
-              <div {...sc(2, "rise", 0.45)} className="absolute w-full" style={{ ...hidden, top: "48%", lineHeight: 1.05 }}>
-                <div style={{ fontSize: inspect ? "min(3.4cqw, 5cqh)" : "min(2.8cqw, 3.8cqh)", color: inspect ? crimson : undefined, transition: "font-size .35s cubic-bezier(.2,.8,.2,1)", whiteSpace: "nowrap" }}>
-                  {inspect ?? labels.idle}
-                </div>
-                <div style={{ ...sans, fontSize: 8, letterSpacing: "0.25em", opacity: 0.6, minHeight: "1.3em", marginTop: 6 }}>
-                  {inspect ? (specimen.prices?.[inspect] ?? labels.onMenu) : labels.hover}
-                </div>
-              </div>
-            </div>
-            <div className="relative flex flex-col items-end gap-[3.2cqh] text-right">
-              {specimen.right.map(([label, items], i) => (
-                <div key={label} {...sc(2, "clip", 0.1 + i * 0.15)} style={hidden} className="relative">
-                  <Side label={label} side="r" />
-                  {words(items, "min(3.6cqw, 4.4cqh)")}
-                </div>
-              ))}
-            </div>
-          </div>
-          <div {...sc(2, "line", 0.5)} className="absolute" style={{ ...hidden, left: "6cqw", right: "6cqw", bottom: "15.5cqh", height: 1, background: bone + "40", transformOrigin: "left" }} />
-          <div {...sc(2, "rise", 0.6)} className="absolute text-center" style={{ ...hidden, left: "6cqw", right: "6cqw", bottom: "8cqh", fontSize: "min(4.2cqw, 3.4cqh)", overflowWrap: "anywhere" }}>
-            <span style={{ fontSize: "0.72em", letterSpacing: "0.02em" }}>{ribbon}</span>
-          </div>
-        </div>
-
-        {/* ================================ 3 · fancy =============================== */}
+        {/* ================================ 1 · fancy =============================== */}
         <div className="pointer-events-none absolute inset-0" style={display}>
           <div className="absolute text-center" style={{ left: "50%", top: "13cqh", transform: "translateX(-50%)", fontSize: "min(16cqw, 12.5cqh)", lineHeight: 0.9, textTransform: "uppercase", whiteSpace: "nowrap" }}>
-            <span {...sc(3, "fade", 0.3)} style={{ ...hidden, position: "absolute", right: "100%", top: "0.35em", fontSize: "0.12em", marginRight: "1.2em", textTransform: "none" }}>{name}</span>
-            <span {...sc(3, "fade", 0.4)} style={{ ...hidden, position: "absolute", left: "100%", top: "0.35em", fontSize: "0.12em", marginLeft: "1.2em", textTransform: "none" }}>{kicker}</span>
-            <div {...sc(3, "clip", 0)} style={hidden}>{stack[0]}</div>
-            <div {...sc(3, "clip", 0.15)} style={hidden}>{stack[1]}</div>
-            <div {...sc(3, "clip", 0.3)} style={hidden}>{stack[2]}</div>
+            <span {...sc(1, "fade", 0.3)} style={{ ...hidden, position: "absolute", right: "100%", top: "0.35em", fontSize: "0.12em", marginRight: "1.2em", textTransform: "none" }}>{name}</span>
+            <span {...sc(1, "fade", 0.4)} style={{ ...hidden, position: "absolute", left: "100%", top: "0.35em", fontSize: "0.12em", marginLeft: "1.2em", textTransform: "none" }}>{kicker}</span>
+            <div {...sc(1, "clip", 0)} style={hidden}>{stack[0]}</div>
+            <div {...sc(1, "clip", 0.15)} style={hidden}>{stack[1]}</div>
+            <div {...sc(1, "clip", 0.3)} style={hidden}>{stack[2]}</div>
           </div>
           <div className="absolute flex justify-center" style={{ left: 0, right: 0, bottom: "5cqh" }}>
-            <div {...sc(3, "rise", 0.6)} style={{ ...sans, ...hidden, fontSize: 9, letterSpacing: "0.9em", textTransform: "uppercase", whiteSpace: "nowrap", paddingLeft: "0.9em" }}>
+            <div {...sc(1, "rise", 0.6)} style={{ ...sans, ...hidden, fontSize: 9, letterSpacing: "0.9em", textTransform: "uppercase", whiteSpace: "nowrap", paddingLeft: "0.9em" }}>
               {studio}
             </div>
           </div>
         </div>
 
-        {/* ================================ 4 · bloom =============================== */}
+        {/* ================================ 2 · bloom =============================== */}
         <div className="pointer-events-none absolute inset-0" style={display}>
           <div className="lys-bloom absolute" style={{ left: "9cqw", top: "34cqh", fontSize: "min(9.5cqw, 13cqh)", lineHeight: 0.82 }}>
             {tagline.map((t, i) => (
               <div
                 key={i}
-                {...sc(4, "clip", i * 0.14)}
+                {...sc(2, "clip", i * 0.14)}
                 style={{
                   ...hidden,
                   fontSize: t.small ? "0.4em" : undefined,
@@ -1380,28 +1246,28 @@ export default function LycorisSpecimen({
                 <span>{t.text}</span>
               </div>
             ))}
-            <div {...sc(4, "rise", 0.7)} style={{ ...sans, ...hidden, fontSize: 9, letterSpacing: "0.25em", marginTop: "3cqh", opacity: 0.7, textTransform: "uppercase" }}>
+            <div {...sc(2, "rise", 0.7)} style={{ ...sans, ...hidden, fontSize: 9, letterSpacing: "0.25em", marginTop: "3cqh", opacity: 0.7, textTransform: "uppercase" }}>
               {bloomCaption}
             </div>
           </div>
         </div>
 
-        {/* ============================== 5 · ligatures ============================== */}
+        {/* ============================== 3 · ligatures ============================== */}
         <div className="pointer-events-none absolute inset-0" style={display}>
           <div className="lys-fin absolute flex items-center justify-around" style={{ left: "4cqw", right: "4cqw", top: "50cqh" }}>
             <div className="relative text-center">
-              <div {...sc(5, "fade", 0.1)} style={{ ...hidden, fontSize: "clamp(9px, 0.9cqw, 12px)", marginBottom: "1.2cqh" }}>
+              <div {...sc(3, "fade", 0.1)} style={{ ...hidden, fontSize: "clamp(9px, 0.9cqw, 12px)", marginBottom: "1.2cqh" }}>
                 {finale.over}
               </div>
               <a
                 href={finale.href}
-                {...sc(5, "clip", 0)}
+                {...sc(3, "clip", 0)}
                 className="pointer-events-auto relative block"
                 style={{ ...hidden, font: "inherit", color: "inherit", textDecoration: "none", fontSize: "min(10cqw, 13cqh)", lineHeight: 1 }}
               >
                 {ligatureWord}
                 <svg
-                  {...sc(5, "draw", 0.2)}
+                  {...sc(3, "draw", 0.2)}
                   aria-hidden
                   viewBox="0 0 100 100"
                   style={{ ...hidden, position: "absolute", left: "44%", top: "50%", width: "1.3em", height: "1.3em", transform: "translate(-50%,-46%)", overflow: "visible", pointerEvents: "none" }}
@@ -1410,7 +1276,7 @@ export default function LycorisSpecimen({
                   <path d="M2 50H98M50 50V98" fill="none" stroke={crimson} strokeWidth="1.3" pathLength={1} strokeDasharray="1" style={{ strokeDashoffset: "calc(1 - var(--v, 0))" } as React.CSSProperties} />
                 </svg>
               </a>
-              <div {...sc(5, "rise", 0.4)} className="flex justify-center gap-[3cqw]" style={{ ...hidden, marginTop: "2.4cqh" }}>
+              <div {...sc(3, "rise", 0.4)} className="flex justify-center gap-[3cqw]" style={{ ...hidden, marginTop: "2.4cqh" }}>
                 {finale.facts.map(([label, value]) => (
                   <div key={label} className="grid justify-items-center" style={{ rowGap: 2 }}>
                     <span style={{ ...sans, fontSize: 9, opacity: 0.7, letterSpacing: "0.15em", textTransform: "uppercase" }}>{label}</span>
@@ -1418,13 +1284,13 @@ export default function LycorisSpecimen({
                   </div>
                 ))}
               </div>
-              <div {...sc(5, "fade", 0.6)} style={{ ...hidden, fontSize: 10, marginTop: "1.6cqh", opacity: 0.7 }}>
+              <div {...sc(3, "fade", 0.6)} style={{ ...hidden, fontSize: 10, marginTop: "1.6cqh", opacity: 0.7 }}>
                 {name}
               </div>
             </div>
             <div className="relative">
-              <div {...sc(5, "fade", 0.3)} style={{ ...hidden, fontSize: "clamp(10px, 1cqw, 13px)" }}>{name}</div>
-              <div {...sc(5, "clip", 0.35)} style={{ ...hidden, fontSize: "min(7cqw, 9.5cqh)", lineHeight: 1, whiteSpace: "nowrap" }}>
+              <div {...sc(3, "fade", 0.3)} style={{ ...hidden, fontSize: "clamp(10px, 1cqw, 13px)" }}>{name}</div>
+              <div {...sc(3, "clip", 0.35)} style={{ ...hidden, fontSize: "min(7cqw, 9.5cqh)", lineHeight: 1, whiteSpace: "nowrap" }}>
                 <span>
                   {multi.map((part, i) => (
                     <React.Fragment key={i}>
@@ -1434,11 +1300,11 @@ export default function LycorisSpecimen({
                   ))}
                 </span>
               </div>
-              <div {...sc(5, "fade", 0.5)} style={{ ...hidden, fontSize: "clamp(10px, 1cqw, 13px)", textAlign: "right" }}>{finale.translation}</div>
+              <div {...sc(3, "fade", 0.5)} style={{ ...hidden, fontSize: "clamp(10px, 1cqw, 13px)", textAlign: "right" }}>{finale.translation}</div>
             </div>
           </div>
 
-          <div {...sc(5, "rise", 0.75)} className="pointer-events-auto absolute flex items-center justify-between gap-4" style={{ ...sans, ...hidden, left: "5cqw", right: "5cqw", bottom: "4.5cqh", fontSize: "clamp(10px, 1.5cqw, 20px)", letterSpacing: "0.04em", color: bone }}>
+          <div {...sc(3, "rise", 0.75)} className="pointer-events-auto absolute flex items-center justify-between gap-4" style={{ ...sans, ...hidden, left: "5cqw", right: "5cqw", bottom: "4.5cqh", fontSize: "clamp(10px, 1.5cqw, 20px)", letterSpacing: "0.04em", color: bone }}>
             <FootLink link={links[0]} />
             <MarkOrLogo color={crimson} accent={bone} size={40} />
             <FootLink link={links[1]} />
