@@ -1147,26 +1147,36 @@ export default function LycorisSpecimen({
 
         {/* ================================ 0 · cover ================================ */}
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute flex items-start justify-between gap-6" style={{ left: "5cqw", right: "5cqw", top: "max(5cqh, 68px)" }}>
-            <div {...sc(0, "clip", 0)} style={{ ...display, ...hidden, fontSize: "clamp(20px, 3.3cqw, 46px)", lineHeight: 0.88, letterSpacing: "0.02em", textTransform: "uppercase" }}>
-              {name}
-              <br />
-              {kicker}
+          <div className="absolute flex items-start justify-between gap-8" style={{ left: "5cqw", right: "5cqw", top: "max(5cqh, 76px)" }}>
+            {/* left: name + kicker, then a readable intro */}
+            <div style={{ maxWidth: "min(30ch, 30cqw)" }}>
+              <div {...sc(0, "clip", 0)} style={{ ...display, ...hidden, fontSize: "clamp(18px, 2.5cqw, 36px)", lineHeight: 0.92, letterSpacing: "0.02em", textTransform: "uppercase" }}>
+                {name}
+                <br />
+                <span style={{ color: crimson }}>{kicker}</span>
+              </div>
+              <span {...sc(0, "line", 0.15)} className="lys-hide-md" style={{ ...hidden, display: "block", width: 48, height: 1, margin: "18px 0 16px", background: bone + "66", transformOrigin: "left" }} />
+              <p {...sc(0, "rise", 0.2)} className="lys-hide-md" style={{ ...sans, ...hidden, margin: 0, fontSize: "clamp(13px, 1.05cqw, 15px)", lineHeight: 1.6, letterSpacing: "0.005em", opacity: 0.82, textWrap: "pretty" } as React.CSSProperties}>
+                {desc}
+              </p>
             </div>
-            <p {...sc(0, "rise", 0.2)} className="lys-hide-md" style={{ ...display, ...hidden, maxWidth: "25cqw", fontSize: "clamp(10px, 0.95cqw, 13px)", lineHeight: 1.35, margin: 0, textAlign: "justify" }}>
-              {desc}
-            </p>
-            <ul {...sc(0, "rise", 0.35)} className="lys-hide-md" style={{ ...display, ...hidden, listStyle: "none", margin: 0, padding: 0, fontSize: "clamp(10px, 0.95cqw, 13px)", lineHeight: 1.35 }}>
-              {specs.map((s) => (
-                <li key={s}>{s}</li>
-              ))}
-            </ul>
-            <div {...sc(0, "clip", 0.5)} className="lys-hide-sm" style={{ ...display, ...hidden, fontSize: "clamp(18px, 2.6cqw, 38px)", lineHeight: 0.9, textAlign: "right", textTransform: "uppercase" }}>
-              {stamp[0]}
-              <br />
-              {stamp[1]}
-              <br />
-              {stamp[2]}
+            {/* right: place stamp, then the facts as a tidy list */}
+            <div className="flex flex-col items-end" style={{ maxWidth: "min(28ch, 26cqw)" }}>
+              <div {...sc(0, "clip", 0.5)} className="lys-hide-sm" style={{ ...display, ...hidden, fontSize: "clamp(16px, 2.1cqw, 30px)", lineHeight: 0.95, textAlign: "right", textTransform: "uppercase" }}>
+                {stamp[0]}
+                <br />
+                {stamp[1]}
+                <br />
+                {stamp[2]}
+              </div>
+              <ul {...sc(0, "rise", 0.35)} className="lys-hide-md" style={{ ...sans, ...hidden, listStyle: "none", margin: "20px 0 0", padding: 0, fontSize: "clamp(12px, 0.95cqw, 14px)", lineHeight: 1.5, textAlign: "right", display: "grid", gap: 6 }}>
+                {specs.map((sp) => (
+                  <li key={sp} style={{ display: "flex", justifyContent: "flex-end", alignItems: "baseline", gap: 8, opacity: 0.85 }}>
+                    <span>{sp}</span>
+                    <span aria-hidden style={{ color: crimson, fontSize: "0.75em" }}>✦</span>
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
 
@@ -1194,19 +1204,22 @@ export default function LycorisSpecimen({
 
           <div className="absolute flex items-end justify-between gap-6" style={{ left: "5cqw", right: "5cqw", bottom: "5cqh" }}>
             <div {...sc(0, "rise", 0.3)} className="flex items-center gap-3" style={hidden}>
-              <MarkOrLogo color={bone} accent={crimson} size={44} />
-              <span style={{ ...sans, fontSize: "clamp(20px, 2.4cqw, 34px)", letterSpacing: "-0.02em", fontWeight: 300 }}>{place.big}</span>
-              <span style={{ ...sans, fontSize: 9, lineHeight: 1.2, letterSpacing: "0.08em", textTransform: "uppercase", borderBottom: "1px solid " + bone + "80", paddingBottom: 6, paddingRight: "6cqw" }}>
+              <MarkOrLogo color={bone} accent={crimson} size={46} />
+              <span style={{ ...sans, fontSize: "clamp(22px, 2.4cqw, 34px)", letterSpacing: "-0.02em", fontWeight: 300 }}>{place.big}</span>
+              <span style={{ ...sans, fontSize: 11, lineHeight: 1.35, letterSpacing: "0.14em", textTransform: "uppercase", borderLeft: "1px solid " + bone + "55", paddingLeft: 12, opacity: 0.85 }}>
                 {place.lines[0]}
                 <br />
                 {place.lines[1]}
               </span>
             </div>
-            <div {...sc(0, "rise", 0.5)} className="lys-hide-sm flex gap-5" style={{ ...sans, ...hidden, color: crimson, fontSize: 8, lineHeight: 1.25, letterSpacing: "0.06em", textTransform: "uppercase" }}>
-              {colophon.map(([a, b]) => (
-                <span key={a}>{a}<br />{b}</span>
+            <dl {...sc(0, "rise", 0.5)} className="lys-hide-sm flex" style={{ ...sans, ...hidden, margin: 0 }}>
+              {colophon.map(([a, b], i) => (
+                <div key={a} style={{ padding: "0 18px", borderLeft: i ? "1px solid " + bone + "33" : "none", textAlign: "left" }}>
+                  <dt style={{ fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: crimson, fontWeight: 600 }}>{a}</dt>
+                  <dd style={{ margin: "4px 0 0", fontSize: 13, letterSpacing: "0.01em", whiteSpace: "nowrap" }}>{b}</dd>
+                </div>
               ))}
-            </div>
+            </dl>
           </div>
 
         </div>
@@ -1221,7 +1234,7 @@ export default function LycorisSpecimen({
             <div {...sc(1, "clip", 0.3)} style={hidden}>{stack[2]}</div>
           </div>
           <div className="absolute flex justify-center" style={{ left: 0, right: 0, bottom: "5cqh" }}>
-            <div {...sc(1, "rise", 0.6)} style={{ ...sans, ...hidden, fontSize: 9, letterSpacing: "0.9em", textTransform: "uppercase", whiteSpace: "nowrap", paddingLeft: "0.9em" }}>
+            <div {...sc(1, "rise", 0.6)} style={{ ...sans, ...hidden, fontSize: 11, letterSpacing: "0.5em", textTransform: "uppercase", whiteSpace: "nowrap", paddingLeft: "0.5em" }}>
               {studio}
             </div>
           </div>
@@ -1246,7 +1259,7 @@ export default function LycorisSpecimen({
                 <span>{t.text}</span>
               </div>
             ))}
-            <div {...sc(2, "rise", 0.7)} style={{ ...sans, ...hidden, fontSize: 9, letterSpacing: "0.25em", marginTop: "3cqh", opacity: 0.7, textTransform: "uppercase" }}>
+            <div {...sc(2, "rise", 0.7)} style={{ ...sans, ...hidden, fontSize: 11, letterSpacing: "0.22em", marginTop: "3cqh", opacity: 0.8, textTransform: "uppercase", color: crimson }}>
               {bloomCaption}
             </div>
           </div>
@@ -1256,7 +1269,7 @@ export default function LycorisSpecimen({
         <div className="pointer-events-none absolute inset-0" style={display}>
           <div className="lys-fin absolute flex items-center justify-around" style={{ left: "4cqw", right: "4cqw", top: "50cqh" }}>
             <div className="relative text-center">
-              <div {...sc(3, "fade", 0.1)} style={{ ...hidden, fontSize: "clamp(9px, 0.9cqw, 12px)", marginBottom: "1.2cqh" }}>
+              <div {...sc(3, "fade", 0.1)} style={{ ...sans, ...hidden, fontSize: "clamp(11px, 0.95cqw, 13px)", letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: "1.4cqh", opacity: 0.8 }}>
                 {finale.over}
               </div>
               <a
@@ -1279,17 +1292,17 @@ export default function LycorisSpecimen({
               <div {...sc(3, "rise", 0.4)} className="flex justify-center gap-[3cqw]" style={{ ...hidden, marginTop: "2.4cqh" }}>
                 {finale.facts.map(([label, value]) => (
                   <div key={label} className="grid justify-items-center" style={{ rowGap: 2 }}>
-                    <span style={{ ...sans, fontSize: 9, opacity: 0.7, letterSpacing: "0.15em", textTransform: "uppercase" }}>{label}</span>
+                    <span style={{ ...sans, fontSize: 10, opacity: 0.75, letterSpacing: "0.16em", textTransform: "uppercase", color: crimson }}>{label}</span>
                     <span style={{ fontSize: "min(2.2cqw, 3.2cqh)", whiteSpace: "nowrap" }}>{value}</span>
                   </div>
                 ))}
               </div>
-              <div {...sc(3, "fade", 0.6)} style={{ ...hidden, fontSize: 10, marginTop: "1.6cqh", opacity: 0.7 }}>
+              <div {...sc(3, "fade", 0.6)} style={{ ...hidden, fontSize: 12, marginTop: "1.6cqh", opacity: 0.6 }}>
                 {name}
               </div>
             </div>
             <div className="relative">
-              <div {...sc(3, "fade", 0.3)} style={{ ...hidden, fontSize: "clamp(10px, 1cqw, 13px)" }}>{name}</div>
+              <div {...sc(3, "fade", 0.3)} style={{ ...hidden, fontSize: "clamp(12px, 1.1cqw, 15px)", opacity: 0.75 }}>{name}</div>
               <div {...sc(3, "clip", 0.35)} style={{ ...hidden, fontSize: "min(7cqw, 9.5cqh)", lineHeight: 1, whiteSpace: "nowrap" }}>
                 <span>
                   {multi.map((part, i) => (
@@ -1300,7 +1313,7 @@ export default function LycorisSpecimen({
                   ))}
                 </span>
               </div>
-              <div {...sc(3, "fade", 0.5)} style={{ ...hidden, fontSize: "clamp(10px, 1cqw, 13px)", textAlign: "right" }}>{finale.translation}</div>
+              <div {...sc(3, "fade", 0.5)} style={{ ...sans, ...hidden, fontSize: "clamp(11px, 1cqw, 13px)", textAlign: "right", letterSpacing: "0.06em", opacity: 0.75 }}>{finale.translation}</div>
             </div>
           </div>
 
@@ -1315,7 +1328,7 @@ export default function LycorisSpecimen({
         <nav
           aria-label="Hero frames"
           className="lys-nav lys-hide-sm absolute flex flex-col items-end"
-          style={{ ...sans, right: "2cqw", top: "50%", transform: "translateY(-50%)", fontSize: 9, letterSpacing: "0.2em", textTransform: "uppercase" }}
+          style={{ ...sans, right: "2cqw", top: "50%", transform: "translateY(-50%)", fontSize: 10, letterSpacing: "0.2em", textTransform: "uppercase" }}
         >
           {nav.map((n, i) => (
             <button key={n} type="button" onClick={() => jump(i)} aria-current={active === i ? "step" : undefined}>
