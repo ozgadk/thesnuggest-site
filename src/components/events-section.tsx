@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from "motion/react"
 import { Mic, PartyPopper, Users, ArrowUpRight } from "lucide-react"
 import { useT } from "@/lib/i18n"
+import { SplitReveal, ParallaxImg } from "@/components/motion-kit"
 import { INSTAGRAM } from "@/lib/venue"
 
 const CARDS = [
@@ -36,7 +37,7 @@ export default function EventsSection() {
           <div>
             <p className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#D9AE55]">{t("What's on")}</p>
             <h2 className="mt-3 font-[Federant,Georgia,serif] text-[clamp(40px,6vw,72px)] leading-[1] text-[#F4ECD9]">
-              {t("Karaoke & events")}
+              <SplitReveal text={t("Karaoke & events")} />
             </h2>
           </div>
           <a
@@ -65,7 +66,7 @@ export default function EventsSection() {
                   {...(c.href ? { href: c.href } : {})}
                   className="group relative flex min-h-[380px] flex-col justify-end overflow-hidden rounded-3xl border border-[#D9AE55]/25 p-7 text-[#F4ECD9]"
                 >
-                  <img src={c.img} alt="" loading="lazy" className="absolute inset-0 size-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <ParallaxImg src={c.img} strength={8} />
                   <span
                     aria-hidden
                     className={

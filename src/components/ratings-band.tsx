@@ -23,7 +23,7 @@ export default function RatingsBand() {
         <ul className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           {RATINGS.map((r) => (
             <li key={r.where}>
-              <a href={r.href} target="_blank" rel="noopener" className="group block rounded-2xl border border-[#D9AE55]/25 p-5 transition-colors hover:border-[#D9AE55]">
+              <a href={r.href} target="_blank" rel="noopener" className="snug-spot group block rounded-2xl border border-[#D9AE55]/25 p-5 transition-colors hover:border-[#D9AE55]">
                 <span className="flex items-baseline gap-1.5">
                   <span className="font-[Federant,Georgia,serif] text-[46px] leading-none text-[#D9AE55]">{r.score}</span>
                   <span className="text-[14px] text-[#F4ECD9]/55">{r.scale}</span>

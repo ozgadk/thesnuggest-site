@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from "motion/react"
 import { Gallery, GalleryImage } from "@/components/ui/shared-element-gallery"
 import { cn } from "@/lib/utils"
+import { SplitReveal } from "@/components/motion-kit"
 import { useT } from "@/lib/i18n"
 
 /** Our own dish photos (Wolt / Bolt Food listings and the order-system menu). */
@@ -54,7 +55,7 @@ export default function KitchenGallery() {
           <div className="max-w-[680px]">
             <p className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#B5651D]">{t("Snuggest Kitchen")}</p>
             <h2 className="mt-3 font-[Federant,Georgia,serif] text-[clamp(42px,6.4vw,84px)] leading-[0.98]">
-              {t("Handmade,")} <span className="text-[#EC7A2C]">{t("every single plate.")}</span>
+              <SplitReveal text={t("Handmade,")} /> <SplitReveal className="text-[#EC7A2C]" text={t("every single plate.")} delay={0.15} />
             </h2>
             <p className="mt-6 max-w-[56ch] text-[18px] leading-relaxed text-[#0A241A]/80">
               {t("Every dish on our menu is made by hand in our own kitchen — from the kofta and the lahmacun to the brownie. No shortcuts, just proper home cooking.")}

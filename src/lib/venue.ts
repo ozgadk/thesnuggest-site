@@ -23,10 +23,11 @@ export const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"
 /** Display order, Monday first. */
 export const WEEK = [1, 2, 3, 4, 5, 6, 0]
 
-/** Cocktail Hour: every day, 18:00–20:00. */
+/** Cocktail Hour: 18:00–20:00 on every day the bar is open (Tuesday–Sunday; Monday closed). */
 export const HH_FROM = 18 * 60
 export const HH_TO = 20 * 60
 export const HH_LABEL = "18:00 – 20:00"
+export const HH_DAYS = [0, 2, 3, 4, 5, 6]
 
 export const fmtTime = (m: number) => {
   const h = Math.floor(m / 60) % 24
@@ -58,11 +59,18 @@ export function openState(d = new Date()) {
   return { open: false }
 }
 
-/** Cocktail Hour state: on now (minutes left), or minutes until it starts. */
+/** Cocktail Hour state: on now (minutes left), or minutes until the next one starts (skips Monday). */
 export function hhState(d = new Date()) {
-  const { min } = rigaNow(d)
-  if (min >= HH_FROM && min < HH_TO) return { on: true, left: HH_TO - min }
-  return { on: false, until: (HH_FROM - min + 24 * 60) % (24 * 60) }
+  const { day, min } = rigaNow(d)
+  if (HH_DAYS.includes(day) && min >= HH_FROM && min < HH_TO) return { on: true, left: HH_TO - min }
+  for (let i = 0; i <= 7; i++) {
+    const n = (day + i) % 7
+    if (!HH_DAYS.includes(n)) continue
+    const until = i * 24 * 60 + HH_FROM - min
+    if (until > 0) return { on: false, until }
+  }
+  return { on: false, until: 0 }
 }
 
-export const fmtDuration = (m: number) => (m >= 60 ? Math.floor(m / 60) + " h " + (m % 60) + " min" : m + " min")
+export const fmtDuration = (m: number) =>
+  m >= 24 * 60 ? Math.floor(m / 1440) + " d " + Math.floor((m % 1440) / 60) + " h" : m >= 60 ? Math.floor(m / 60) + " h " + (m % 60) + " min" : m + " min"

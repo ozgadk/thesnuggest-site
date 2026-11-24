@@ -2,6 +2,7 @@ import * as React from "react"
 import { AnimatePresence, motion, useReducedMotion } from "motion/react"
 import { Martini } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { SplitReveal, ParallaxImg } from "@/components/motion-kit"
 import { useT } from "@/lib/i18n"
 
 type Drink = { n: string; d?: string; p: string; hh?: boolean; sig?: boolean; isNew?: boolean; img?: string }
@@ -134,7 +135,7 @@ export default function CocktailsSection() {
           <div>
             <p className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#D9AE55]">{t("The bar")}</p>
             <h2 className="mt-3 font-[Federant,Georgia,serif] text-[clamp(40px,6vw,72px)] leading-[1] text-[#F4ECD9]">
-              {t("Cocktails")}
+              <SplitReveal text={t("Cocktails")} />
             </h2>
           </div>
           <p className="max-w-[44ch] text-[16px] leading-relaxed text-[#F4ECD9]/70">
@@ -153,7 +154,9 @@ export default function CocktailsSection() {
               transition={{ duration: 0.6, delay: reduce ? 0 : i * 0.08, ease: [0.22, 1, 0.36, 1] }}
               className="relative w-[70%] shrink-0 snap-start overflow-hidden rounded-2xl border border-[#D9AE55]/25 sm:w-auto"
             >
-              <img src={ph.src} alt={ph.alt} loading="lazy" className="aspect-[3/4] w-full object-cover transition-transform duration-700 hover:scale-105" />
+              <div className="group relative aspect-[3/4] w-full">
+                <ParallaxImg src={ph.src} alt={ph.alt} strength={6} />
+              </div>
               {ph.caption && (
                 <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#0A241A]/90 to-transparent px-4 pb-3 pt-10 font-[Federant,Georgia,serif] text-[18px] text-[#F4ECD9]">
                   {t(ph.caption)}
@@ -220,7 +223,7 @@ export default function CocktailsSection() {
                     initial={reduce ? false : { opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.45, delay: reduce ? 0 : i * 0.04, ease: [0.22, 1, 0.36, 1] }}
-                    className="group relative flex min-h-[150px] flex-col overflow-hidden rounded-2xl border border-[#D9AE55]/25 bg-gradient-to-br from-[#17472F] to-[#133D2B] p-5 transition-colors hover:border-[#D9AE55]/60"
+                    className="snug-spot group relative flex min-h-[150px] flex-col overflow-hidden rounded-2xl border border-[#D9AE55]/25 bg-gradient-to-br from-[#17472F] to-[#133D2B] p-5 transition-colors hover:border-[#D9AE55]/60"
                   >
                     {d.img && (
                       <img src={d.img} alt="" loading="lazy" className="relative -mx-5 -mt-5 mb-4 aspect-[16/10] w-[calc(100%+2.5rem)] max-w-none object-cover" />

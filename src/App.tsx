@@ -14,11 +14,15 @@ import VisitSection from "@/components/visit-section"
 import SiteFooter from "@/components/site-footer"
 import { LangProvider, useT } from "@/lib/i18n"
 import { MAPS } from "@/lib/venue"
+import { IntroCurtain, SmoothScroll, Spotlights } from "@/components/motion-kit"
 
 function Site() {
   const t = useT()
   return (
     <>
+    <IntroCurtain />
+    <SmoothScroll />
+    <Spotlights />
     <SiteHeader />
     <main id="main" className="w-full">
       <div id="top" />
@@ -29,7 +33,7 @@ function Site() {
         stamp={[t("Cocktails"), t("Kitchen"), "Vecrīga"]}
         place={{ big: "Rīga", lines: ["Zirgu iela 3", t("Old Town")] }}
         colophon={[
-          [t("Cocktail Hour"), t("5 € daily")],
+          [t("Cocktail Hour"), t("5 € · Tue – Sun")],
           [t("Kitchen"), t("Smash & Turkish")],
           [t("Open"), t("Tue – Sun")],
           ["Zirgu iela 3", "Vecrīga"],
@@ -40,7 +44,7 @@ function Site() {
         )}
         specs={[
           t("21 cocktails at 5 €"),
-          t("Cocktail Hour daily 18:00–20:00"),
+          t("Cocktail Hour Tue–Sun 18:00–20:00"),
           t("Smash burgers & Turkish kitchen"),
           t("Craft beer & beer cocktails"),
           t("4.9 ★ on Google"),
@@ -51,7 +55,7 @@ function Site() {
           { text: t("Old Town") },
           { text: t("every evening"), small: true },
         ]}
-        bloomCaption={t("Cocktail Hour · every day 18:00–20:00")}
+        bloomCaption={t("Cocktail Hour · Tue–Sun 18:00–20:00")}
         multilingual="Prie·kā!"
         ligatureWord={t("Cocktails")}
         finale={{

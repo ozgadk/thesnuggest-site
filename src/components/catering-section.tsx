@@ -1,5 +1,6 @@
 import { ChefHat, Martini, CalendarHeart, Mail } from "lucide-react"
 import { useT } from "@/lib/i18n"
+import { SplitReveal } from "@/components/motion-kit"
 import { EMAIL } from "@/lib/venue"
 
 /**
@@ -22,13 +23,13 @@ export default function CateringSection() {
         <div>
           <p className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#D9AE55]">{t("Catering")}</p>
           <h2 className="mt-3 font-[Federant,Georgia,serif] text-[clamp(40px,6vw,72px)] leading-[1] text-[#F4ECD9]">
-            {t("The Snuggest, at your event")}
+            <SplitReveal text={t("The Snuggest, at your event")} />
           </h2>
           <p className="mt-5 max-w-[52ch] text-[17px] leading-relaxed text-[#F4ECD9]/75">
             {t("Bring our kitchen and our bar to your celebration. Tell us the date, the number of guests and what you have in mind — we will put together a menu for you.")}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href={mail} className="inline-flex min-h-12 items-center gap-2 rounded-full bg-[#D9AE55] px-6 text-[15px] font-semibold text-[#0A241A] transition hover:brightness-110">
+            <a href={mail} className="snug-shine inline-flex min-h-12 items-center gap-2 rounded-full bg-[#D9AE55] px-6 text-[15px] font-semibold text-[#0A241A] transition hover:brightness-110">
               <Mail className="size-4" aria-hidden /> {t("Ask for a catering offer")}
             </a>
           </div>
@@ -38,7 +39,7 @@ export default function CateringSection() {
           {POINTS.map((p) => {
             const Icon = p.icon
             return (
-              <li key={p.title} className="flex gap-4 rounded-2xl border border-[#D9AE55]/25 bg-[#0A241A]/60 p-5">
+              <li key={p.title} className="snug-spot flex gap-4 rounded-2xl border border-[#D9AE55]/25 bg-[#0A241A]/60 p-5">
                 <span className="grid size-11 shrink-0 place-items-center rounded-full bg-[#D9AE55]/15 text-[#D9AE55]">
                   <Icon className="size-5" aria-hidden />
                 </span>

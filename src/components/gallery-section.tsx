@@ -1,6 +1,7 @@
 import { Gallery, GalleryGrid, GalleryImage } from "@/components/ui/shared-element-gallery"
 import { Camera } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { SplitReveal } from "@/components/motion-kit"
 import { useT } from "@/lib/i18n"
 
 export type Photo = { id: string; src: string; alt: string }
@@ -54,7 +55,7 @@ export default function GallerySection({ id, eyebrow, title, photos, tone = "dee
           <div>
             <p className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#D9AE55]">{eyebrow}</p>
             <h2 className="mt-3 font-[Federant,Georgia,serif] text-[clamp(40px,6vw,72px)] leading-[1] text-[#F4ECD9]">
-              {title}
+              <SplitReveal text={title} />
             </h2>
             {photos.length > 0 && (
               <p className="mt-4 max-w-[48ch] text-[16px] leading-relaxed text-[#F4ECD9]/70">

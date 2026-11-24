@@ -20,7 +20,7 @@ export default function CocktailHourSection() {
     <TickerRingCta
       className="snug-cta"
       theme="night"
-      eyebrow={t("Cocktail Hour · every day")}
+      eyebrow={t("Cocktail Hour · Tue – Sun")}
       headline={
         <>
           {t("21 cocktails,")} <em>5 €</em> {t("a glass.")}
@@ -28,9 +28,9 @@ export default function CocktailHourSection() {
       }
       sub={
         <>
-          <span className="snug-hh-clock" aria-label={t("Every day") + " " + HH_LABEL}>
+          <span className="snug-hh-clock" aria-label={t("Tuesday to Sunday") + " " + HH_LABEL}>
             <span className="snug-hh-time">{HH_LABEL}</span>
-            <span className="snug-hh-days">{t("Every day")}</span>
+            <span className="snug-hh-days">{t("Tuesday – Sunday")}</span>
           </span>
           <span className={"snug-hh-live" + (hh.on ? " is-on" : "")} role="status">
             <i aria-hidden />
@@ -38,7 +38,7 @@ export default function CocktailHourSection() {
           </span>
           <span className="snug-hh-sub">
             {t(
-              "Mojito, Espresso Martini, Aperol Spritz, our Istanbul City beer cocktail and the house Snug Peach Gin — at the bar, every single evening.",
+              "Mojito, Espresso Martini, Aperol Spritz, our Istanbul City beer cocktail and the house Snug Peach Gin — at the bar, every evening we are open.",
             )}
           </span>
         </>
@@ -46,7 +46,7 @@ export default function CocktailHourSection() {
       action={t("Get directions")}
       href={MAPS}
       secondary={{ label: t("Follow @thesnuggest"), href: INSTAGRAM }}
-      ticker={[t("Every day") + " " + HH_LABEL, t("21 cocktails · 5 €"), "Zirgu iela 3 · Vecrīga", t("In the bar only")]}
+      ticker={[t("Tue – Sun") + " " + HH_LABEL, t("21 cocktails · 5 €"), "Zirgu iela 3 · Vecrīga", t("In the bar only")]}
     />
   )
 }

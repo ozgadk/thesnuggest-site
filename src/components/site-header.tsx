@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "motion/react"
 import { Menu, X } from "lucide-react"
 import { LANGS, useLang } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
+import { ScrollProgress } from "@/components/motion-kit"
 import { OpenBadge } from "@/components/visit-section"
 
 const LINKS: [string, string][] = [
@@ -65,6 +66,7 @@ export default function SiteHeader() {
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:rounded-full focus:bg-[#D9AE55] focus:px-4 focus:py-2 focus:text-[#0A241A]">
         {t("Skip to content")}
       </a>
+      <ScrollProgress />
       <div className="mx-auto flex h-[60px] max-w-[1280px] items-center gap-4 px-4 sm:px-6">
         <a href="#top" className="flex items-center gap-2 text-[#F4ECD9]" aria-label="The Snuggest">
           <img src="/img/logo-sm.webp" alt="" width={38} height={38} className="size-[38px] object-contain" />

@@ -3,6 +3,7 @@ import { LocationMap } from "@/components/ui/expand-map"
 import { Navigation } from "lucide-react"
 import { useT } from "@/lib/i18n"
 import { cn } from "@/lib/utils"
+import { SplitReveal } from "@/components/motion-kit"
 import { DAY_NAMES, HH_LABEL, HOURS, MAPS, WEEK, fmtHours, fmtTime, openState, rigaNow } from "@/lib/venue"
 
 export function useOpenState() {
@@ -39,7 +40,7 @@ export default function VisitSection() {
         <div>
           <p className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#D9AE55]">{t("Visit us")}</p>
           <h2 className="mt-3 font-[Federant,Georgia,serif] text-[clamp(40px,6vw,72px)] leading-[1] text-[#F4ECD9]">
-            {t("Zirgu iela 3, Vecrīga")}
+            <SplitReveal text={t("Zirgu iela 3, Vecrīga")} />
           </h2>
           <p className="mt-5 max-w-[46ch] text-[16px] leading-relaxed text-[#F4ECD9]/70">
             {t("A cobbled street in the heart of Old Town Riga, a few steps from the Cat House. Walk in — no booking needed.")}
@@ -75,7 +76,7 @@ export default function VisitSection() {
             </tbody>
           </table>
           <div className="mt-6 flex items-center justify-between gap-4 rounded-2xl border border-[#EC7A2C]/40 bg-[#EC7A2C]/10 px-5 py-4">
-            <span className="text-[13px] font-bold uppercase tracking-[0.16em] text-[#EC7A2C]">{t("Cocktail Hour")} · {t("Every day")}</span>
+            <span className="text-[13px] font-bold uppercase tracking-[0.16em] text-[#EC7A2C]">{t("Cocktail Hour")} · {t("Tue – Sun")}</span>
             <span className="font-[Federant,Georgia,serif] text-[24px] tabular-nums text-[#F4ECD9]">{HH_LABEL}</span>
           </div>
         </div>

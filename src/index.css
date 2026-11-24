@@ -86,3 +86,37 @@ html, body { margin: 0; background: var(--snug-ink); color: var(--snug-cream); }
   .snug-cta .trcta__face { padding-inline: 12px; }
   .snug-hh-time { font-size: clamp(30px, 11.2vw, 52px); }
 }
+
+/* Soft gold light that follows the pointer across a card (set by <Spotlights />) */
+.snug-spot { position: relative; isolation: isolate; }
+.snug-spot::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: -1;
+  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), rgba(217, 174, 85, 0.18), transparent 60%);
+  opacity: 0; transition: opacity 0.35s ease;
+}
+.snug-spot:hover::after { opacity: 1; }
+
+/* A light sweep across gold buttons on hover */
+.snug-shine { position: relative; overflow: hidden; isolation: isolate; }
+.snug-shine::after {
+  content: ""; position: absolute; inset: -20% auto -20% -60%; width: 45%; z-index: 1; pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: skewX(-20deg) translateX(0); transition: transform 0.8s cubic-bezier(.16, 1, .3, 1);
+}
+.snug-shine:hover::after, .snug-shine:focus-visible::after { transform: skewX(-20deg) translateX(420%); }
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .snug-shine::after, .snug-spot::after { transition: none; }
+}
+.snug-cta .trcta__primary { position: relative; overflow: hidden; }
+.snug-cta .trcta__primary::after {
+  content: ""; position: absolute; inset: -20% auto -20% -60%; width: 45%; pointer-events: none;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: skewX(-20deg); transition: transform 0.8s cubic-bezier(.16, 1, .3, 1);
+}
+.snug-cta .trcta__primary:hover::after { transform: skewX(-20deg) translateX(420%); }

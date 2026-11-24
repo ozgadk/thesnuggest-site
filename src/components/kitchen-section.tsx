@@ -1,4 +1,5 @@
 import { PhotoDeck, type DeckPhoto } from "@/components/ui/photo-deck"
+import { SplitReveal } from "@/components/motion-kit"
 import { useT } from "@/lib/i18n"
 
 /**
@@ -77,7 +78,7 @@ export default function KitchenSection() {
           <div>
             <p className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#D9AE55]">{t("The kitchen")}</p>
             <h2 className="mt-3 font-[Federant,Georgia,serif] text-[clamp(40px,6vw,72px)] leading-[1] text-[#F4ECD9]">
-              {t("Food worth staying for")}
+              <SplitReveal text={t("Food worth staying for")} />
             </h2>
           </div>
           <p className="max-w-[44ch] text-[16px] leading-relaxed text-[#F4ECD9]/70">
@@ -137,7 +138,7 @@ export default function KitchenSection() {
 
         <div className="mt-10 flex flex-wrap items-center gap-3">
           <span className="w-full text-[15px] text-[#F4ECD9]/70 sm:mr-auto sm:w-auto">{t("Hungry at home?")}</span>
-          <a className="inline-flex min-h-11 items-center rounded-full bg-[#D9AE55] px-6 text-[15px] font-semibold text-[#0A241A] transition hover:brightness-110" href="https://wolt.com/en/lva/riga/restaurant/the-snuggest-barcafe" target="_blank" rel="noopener">{t("Order on Wolt")}</a>
+          <a className="snug-shine inline-flex min-h-11 items-center rounded-full bg-[#D9AE55] px-6 text-[15px] font-semibold text-[#0A241A] transition hover:brightness-110" href="https://wolt.com/en/lva/riga/restaurant/the-snuggest-barcafe" target="_blank" rel="noopener">{t("Order on Wolt")}</a>
           <a className="inline-flex min-h-11 items-center rounded-full border border-[#D9AE55]/50 px-6 text-[15px] font-semibold text-[#F4ECD9] transition hover:border-[#D9AE55]" href="https://food.bolt.eu/en/3-riga/p/131314-the-snuggest-kitchen/" target="_blank" rel="noopener">{t("Order on Bolt Food")}</a>
         </div>
       </div>

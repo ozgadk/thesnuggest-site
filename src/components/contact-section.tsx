@@ -1,5 +1,6 @@
 import { Mail, Phone, MapPin, Camera, ArrowUpRight } from "lucide-react"
 import { useT } from "@/lib/i18n"
+import { SplitReveal } from "@/components/motion-kit"
 import { EMAIL, PHONE, PHONE_HREF, INSTAGRAM, MAPS } from "@/lib/venue"
 
 export default function ContactSection() {
@@ -15,7 +16,7 @@ export default function ContactSection() {
       <div className="mx-auto max-w-[1200px]">
         <p className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#D9AE55]">{t("Contact")}</p>
         <h2 className="mt-3 max-w-[16ch] font-[Federant,Georgia,serif] text-[clamp(40px,6vw,72px)] leading-[1] text-[#F4ECD9]">
-          {t("Say hello")}
+          <SplitReveal text={t("Say hello")} />
         </h2>
         <p className="mt-5 max-w-[52ch] text-[17px] leading-relaxed text-[#F4ECD9]/70">
           {t("Questions, private events, catering or just a table for tonight — we answer every message.")}
@@ -30,7 +31,7 @@ export default function ContactSection() {
                   href={c.href}
                   {...(c.external ? { target: "_blank", rel: "noopener" } : {})}
                   className={
-                    "group flex h-full min-h-[190px] flex-col rounded-3xl border p-6 transition-colors " +
+                    "snug-spot group flex h-full min-h-[190px] flex-col rounded-3xl border p-6 transition-colors " +
                     (c.primary
                       ? "border-[#D9AE55] bg-[#D9AE55] text-[#0A241A] hover:brightness-105"
                       : "border-[#D9AE55]/25 bg-[#133D2B] text-[#F4ECD9] hover:border-[#D9AE55]/70")
