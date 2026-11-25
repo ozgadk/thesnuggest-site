@@ -1,10 +1,31 @@
+import * as React from "react"
 import MeadowRiseFooter from "@/components/ui/meadow-rise-footer"
 import { EMAIL } from "@/lib/venue"
 import { useT } from "@/lib/i18n"
 
 const MAPS = "https://www.google.com/maps/search/?api=1&query=The+Snuggest+Zirgu+iela+3+Riga"
 
+/** Mount the (canvas-heavy) footer only when the visitor gets near it. */
+function useNearView<T extends HTMLElement>(margin = "1200px") {
+  const ref = React.useRef<T>(null)
+  const [near, setNear] = React.useState(false)
+  React.useEffect(() => {
+    const el = ref.current
+    if (!el || near) return
+    const io = new IntersectionObserver((e) => e[0]?.isIntersecting && setNear(true), { rootMargin: margin })
+    io.observe(el)
+    return () => io.disconnect()
+  }, [near, margin])
+  return [ref, near] as const
+}
+
 export default function SiteFooter() {
+  const [ref, near] = useNearView<HTMLDivElement>()
+  if (!near) return <div ref={ref} style={{ minHeight: 900, background: "#0A241A" }} aria-hidden />
+  return <FooterInner />
+}
+
+function FooterInner() {
   const t = useT()
   return (
     <MeadowRiseFooter

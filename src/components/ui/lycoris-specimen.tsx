@@ -713,8 +713,10 @@ export default function LycorisSpecimen({
     const word = wordRef.current
     if (!root || !stage || !canvas || !glow || !word) return
 
-    const { curves, radius } = buildCurves(look.current.florets, look.current.seed)
-    const mesh = buildMesh(curves)
+    // With an emblem image the flower is never drawn, so skip building its mesh.
+    const useEmblem = !!emblemRef.current
+    const { curves, radius } = useEmblem ? { curves: [] as Curve[], radius: 2.2 } : buildCurves(look.current.florets, look.current.seed)
+    const mesh = useEmblem ? { data: new Float32Array(0), index: new Uint16Array(0), vertices: 0 } : buildMesh(curves)
 
     // ---- GL, with a 2D fallback -------------------------------------------
     let gl: WebGLRenderingContext | null = null
@@ -1141,7 +1143,7 @@ export default function LycorisSpecimen({
               boxShadow: "0 0 0 3px " + crimson + "b3, 0 0 0 10px " + crimson + "22, 0 40px 100px -30px rgba(0,0,0,0.7)",
             }}
           >
-            <img src={emblemSrc} alt="" draggable={false} style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", maxWidth: "none" }} />
+            <img src={emblemSrc} alt="" draggable={false} fetchPriority="high" decoding="async" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block", maxWidth: "none" }} />
           </div>
         )}
 
@@ -1191,7 +1193,7 @@ export default function LycorisSpecimen({
             >
               {overline}
             </span>
-            <h2 style={{ margin: 0, font: "inherit", fontFeatureSettings: '"liga" 1' }} aria-label={name}>
+            <h1 style={{ margin: 0, font: "inherit", fontFeatureSettings: '"liga" 1' }} aria-label={"The " + name + " — " + kicker + ", Old Town Riga"}>
               {letters.map((c, i) => (
                 <span key={i} data-ch className="inline-block" style={{ willChange: "transform" }} aria-hidden>
                   <span className="lys-char" style={{ animationDelay: 0.15 + i * 0.07 + "s" }}>
@@ -1199,7 +1201,7 @@ export default function LycorisSpecimen({
                   </span>
                 </span>
               ))}
-            </h2>
+            </h1>
           </div>
 
           <div className="absolute flex items-end justify-between gap-6" style={{ left: "5cqw", right: "5cqw", bottom: "5cqh" }}>

@@ -53,9 +53,9 @@ export default function KitchenGallery() {
       <div className="relative mx-auto max-w-[1200px]">
         <div className="mb-12 flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div className="max-w-[680px]">
-            <p className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#B5651D]">{t("Snuggest Kitchen")}</p>
+            <p className="text-[12px] font-semibold uppercase tracking-[0.25em] text-[#8A4A12]">{t("Snuggest Kitchen")}</p>
             <h2 className="mt-3 font-[Federant,Georgia,serif] text-[clamp(42px,6.4vw,84px)] leading-[0.98]">
-              <SplitReveal text={t("Handmade,")} /> <SplitReveal className="text-[#EC7A2C]" text={t("every single plate.")} delay={0.15} />
+              <SplitReveal text={t("Handmade,")} /> <SplitReveal className="text-[#B04E0C]" text={t("every single plate.")} delay={0.15} />
             </h2>
             <p className="mt-6 max-w-[56ch] text-[18px] leading-relaxed text-[#0A241A]/80">
               {t("Every dish on our menu is made by hand in our own kitchen — from the kofta and the lahmacun to the brownie. No shortcuts, just proper home cooking.")}
@@ -88,7 +88,7 @@ export default function KitchenGallery() {
             ))}
           </div>
         </Gallery>
-        <p className="mt-5 text-[14px] text-[#0A241A]/60">{t("Tap any photo to open it, swipe down to close.")}</p>
+        <p className="mt-5 text-[14px] text-[#0A241A]/75">{t("Tap any photo to open it, swipe down to close.")}</p>
       </div>
     </section>
   )

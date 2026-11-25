@@ -76,7 +76,7 @@ export default function VisitSection() {
             </tbody>
           </table>
           <div className="mt-6 flex items-center justify-between gap-4 rounded-2xl border border-[#EC7A2C]/40 bg-[#EC7A2C]/10 px-5 py-4">
-            <span className="text-[13px] font-bold uppercase tracking-[0.16em] text-[#EC7A2C]">{t("Cocktail Hour")} · {t("Tue – Sun")}</span>
+            <span className="text-[13px] font-bold uppercase tracking-[0.16em] text-[#F08A45]">{t("Cocktail Hour")} · {t("Tue – Sun")}</span>
             <span className="font-[Federant,Georgia,serif] text-[24px] tabular-nums text-[#F4ECD9]">{HH_LABEL}</span>
           </div>
         </div>

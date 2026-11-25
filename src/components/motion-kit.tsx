@@ -30,7 +30,8 @@ export function SplitReveal({ text, className, delay = 0 }: { text: string; clas
   const words = text.split(" ")
   if (reduce) return <span className={className}>{text}</span>
   return (
-    <span className={className} aria-label={text}>
+    <span className={className}>
+      <span className="sr-only">{text}</span>
       {words.map((w, i) => (
         <React.Fragment key={i + w}>
           <span aria-hidden className="inline-block overflow-hidden pb-[0.12em] align-bottom">
